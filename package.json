@@ -1,0 +1,10 @@
+{
+    "name": "football.waq.dk"
+  , "version": "0.0.1"
+  , "private": true
+  , "dependencies": {
+      "express": "2.5.9"
+    , "jade": "*"
+    , "socket.io": "~0.9.5"
+  }
+}
