@@ -38,6 +38,7 @@ app.listen(3000, function(){
 
 var clients = 0;
 var io = require('socket.io').listen(app);
+io.enable('browser client minification');
 
 io.sockets.on('connection', function (socket) {
   clients++;
