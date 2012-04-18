@@ -1,2 +1,22 @@
-h1= title
-p Welcome to #{title}
+doctype 5
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    title= title
+    //link(rel='stylesheet', href='/stylesheets/style.css')
+    script(src='/socket.io/socket.io.js')
+    script(src='/js/tinyDOM.min.js')
+    script
+      var socket = io.connect('http://localhost:3000');
+
+      socket.on('users', function (data) {
+        $.id('current_users').innerHTML = data.count;
+      });
+
+      socket.on('tweet', function (data) {
+        console.log(data);
+      });
+  body
+    h1= title
+    div.
+      Currently connected users: <span id="current_users">0</span>
