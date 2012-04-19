@@ -1,6 +1,10 @@
 /*jshint
+  node: true,
+  globalstrict: true,
   laxcomma: true
 */
+
+'use strict';
 
 //
 // Based on https://gist.github.com/833401
