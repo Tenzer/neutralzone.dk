@@ -15,7 +15,7 @@ html(lang='en')
 
       socket.on('tweet', function (data) {
         var item = document.createElement('li');
-        item.innerHTML = 'User: ' + data.user.name + ', Date: ' + data.created_at + ', Tweet: ' + data.text;
+        item.innerHTML = 'User: ' + data.user.name + '<br />Date: ' + data.created_at + '<br />Tweet: ' + data.text;
         var list = $.id('tweets');
         list.insertBefore(item, list.firstChild);
       });
