@@ -12,18 +12,24 @@
 
 var util = require('util'),
   https = require('https'),
+  querystring = require('querystring'),
   events = require('events');
 
 var Twitter = function (opts) {
+  this.data = '';
   this.username = opts.username;
   this.password = opts.password;
-  this.track = opts.track.join(',');
-  this.data = '';
+  this.filter = {};
+  if (opts.track) this.filter.track = opts.track.join(',');
+  if (opts.locations) this.filter.locations = opts.locations.join(',');
 };
 
 Twitter.prototype = new events.EventEmitter();
 
 Twitter.prototype.getTweets = function () {
+  var filter = querystring.stringify(this.filter);
+  filter = querystring.unescape(filter);
+
   var opts = {
     hostname: 'stream.twitter.com'
   , path: '/1/statuses/filter.json'
@@ -36,7 +42,7 @@ Twitter.prototype.getTweets = function () {
   var self = this;
 
   opts.headers['Content-Type'] = 'application/x-www-form-urlencoded';
-  opts.headers['Content-Length'] = ('track=' + this.track).length;
+  opts.headers['Content-Length'] = filter.length;
 
   this.connection = https.request(opts, function(response) {
     response.setEncoding('utf8');
@@ -67,7 +73,7 @@ Twitter.prototype.getTweets = function () {
     self.emit('error', { message: 'Connection closed' });
   });
 
-  this.connection.write('track=' + this.track);
+  this.connection.write(filter);
   this.connection.end();
 };
 

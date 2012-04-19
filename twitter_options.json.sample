@@ -3,5 +3,8 @@
   "password": "<password>",
   "track": [
     15042107
+  ],
+  "locations": [
+    "8.04,54.68,12.64,57.71"
   ]
 }
