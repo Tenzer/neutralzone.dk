@@ -97,7 +97,7 @@ t.on('error', function (e) {
   console.error('ERROR: Received following error message from Twitter handler:');
   console.error(e.message);
   console.error('Quitting now!');
-  require('process').exit(1);
+  process.exit(1);
 });
 
 t.getTweets();
