@@ -78,9 +78,17 @@ var Twitter = require('./twitter_streaming.js');
 var t = new Twitter(twitter_options);
 
 t.on('tweet', function (tweet) {
-  io.sockets.emit('tweet', tweet);
+  // Pick out the data we are interested in, in order to decrease data sent to the clients
+  var small_tweet = {
+    text: tweet.text
+  , created_at: tweet.created_at
+  , user: {
+      name: tweet.user.name
+    }
+  };
+  io.sockets.emit('tweet', small_tweet);
 
-  if (latest_tweets.push(tweet) > 20) {
+  if (latest_tweets.push(small_tweet) > 5) {
     latest_tweets.shift();
   }
 });
