@@ -15,7 +15,7 @@ io.set('log level', 2);
 
 var clients = 0;
 
-io.sockets.on('connection', function (socket) {
+io.sockets.on('connection', function clientConnected (socket) {
   clients++;
   socket.emit('users', { count: clients });
   socket.broadcast.emit('users', { count: clients });
@@ -25,7 +25,7 @@ io.sockets.on('connection', function (socket) {
     socket.emit('tweet', { html: latest_tweets[i] });
   }
 
-  socket.on('disconnect', function () {
+  socket.on('disconnect', function clientDisconnected () {
     clients--;
     socket.broadcast.emit('users', { count: clients });
   });
@@ -40,7 +40,7 @@ var latest_tweets = [];
 var Twitter = require('./twitter_streaming.js');
 var t = new Twitter(twitter_options);
 
-t.on('tweet', function (tweet) {
+t.on('tweet', function processNewTweet (tweet) {
   var rendered_tweet = renderTweet(tweet);
   io.sockets.emit('tweet', { html: rendered_tweet });
 
@@ -49,7 +49,7 @@ t.on('tweet', function (tweet) {
   }
 });
 
-t.on('error', function (e) {
+t.on('error', function processError (e) {
   console.error('ERROR: Received following error message from Twitter handler:');
   console.error(e.message);
   console.error('Quitting now!');
