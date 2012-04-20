@@ -3,29 +3,73 @@
   <head>
     <meta charset='utf-8' />
     <title>Live tweets from Danish American Football teams</title>
+    <style type='text/css'>
+      header, aside, footer {
+        display: block;
+      }
+
+      aside {
+        float: left;
+        width: 20%;
+      }
+
+      ul#tweets {
+        float: right;
+        width: 75%;
+      }
+
+      ul#tweets li {
+        margin-bottom: 10px;
+      }
+
+      /*footer {
+        clear: both;
+        text-align: center;
+      }*/
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Live tweets from Danish American Football teams</h1>
+    </header>
+
+    <aside>
+      <p>Twitter accounts followed:</p>
+      <ul>
+        <li><a href='http://twitter.com/#!/AmagerDemons'>Amager Demons</a></li>
+        <li><a href='http://twitter.com/#!/CPHTowers'>Copenhagen Towers</a></li>
+        <li><a href='http://twitter.com/#!/EsbHurricanes'>Esbjerg Hurricanes</a></li>
+        <li><a href='http://twitter.com/#!/Hrebels'>Herlev Rebels</a></li>
+        <li><a href='http://twitter.com/#!/GoldDiggers'>Søllerød Gold Diggers</a></li>
+        <li><a href='http://twitter.com/#!/RzrbckDK'>Triangle Razorbacks</a></li>
+        <li><a href='http://twitter.com/#!/USfootballdk'>USfootball</a></li>
+      </ul>
+      <p>This page is made by <a href='http://tenzer.dk/'>Jeppe Toustrup</a>, the source code is available on <a href='https://github.com/Tenzer/football.waq.dk'>GitHub</a>.</p>
+      <p id='status'>Not connected to server.</p>
+    </aside>
+
+    <ul id='tweets'></ul>
+
     <script src='http://localhost:3000/socket.io/socket.io.js'></script>
     <script src='js/tinyDOM.min.js'></script>
     <script>
       var socket = io.connect('http://localhost:3000');
 
       socket.on('users', function (data) {
-        $.id('current_users').innerHTML = data.count;
+        $.id('status').innerHTML = 'Connected to server. Current users: ' + data.count + '.';
       });
 
       socket.on('tweet', function (data) {
         var item = document.createElement('li');
-        item.innerHTML = 'User: ' + data.user.name + '<br />Date: ' + data.created_at + '<br />Tweet: ' + data.text;
+        item.innerHTML = data.html;
         var list = $.id('tweets');
         list.insertBefore(item, list.firstChild);
       });
+
+      socket.on('error', function (error) {
+        $.id('status').innerHTML = 'Lost connection to server.';
+        console.log(error);
+      });
     </script>
-  </head>
-  <body>
-    <h1>Live tweets from Danish American Football teams</h1>
-    <div>Currently connected users: <span id='current_users'>0</span></div>
-    <div>
-      <ul id='tweets'>
-      </ul>
-    </div>
   </body>
 </html>

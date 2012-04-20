@@ -22,7 +22,7 @@ io.sockets.on('connection', function (socket) {
 
   // Sends out the latest tweets to new users
   for (var i = 0; i < latest_tweets.length; i++) {
-    socket.emit('tweet', latest_tweets[i]);
+    socket.emit('tweet', { html: latest_tweets[i] });
   }
 
   socket.on('disconnect', function () {
@@ -41,17 +41,10 @@ var Twitter = require('./twitter_streaming.js');
 var t = new Twitter(twitter_options);
 
 t.on('tweet', function (tweet) {
-  // Pick out the data we are interested in, in order to decrease data sent to the clients
-  var small_tweet = {
-    text: tweet.text
-  , created_at: tweet.created_at
-  , user: {
-      name: tweet.user.name
-    }
-  };
-  io.sockets.emit('tweet', small_tweet);
+  var rendered_tweet = renderTweet(tweet);
+  io.sockets.emit('tweet', { html: rendered_tweet });
 
-  if (latest_tweets.push(small_tweet) > 5) {
+  if (latest_tweets.push(rendered_tweet) > 5) {
     latest_tweets.shift();
   }
 });
@@ -64,3 +57,16 @@ t.on('error', function (e) {
 });
 
 t.getTweets();
+
+
+/* Rendering */
+
+var mustache = require('mustache');
+
+function renderTweet (tweet) {
+  return mustache.to_html(
+    '@<a href="http://twitter.com/#!/{{user.screen_name}}">{{user.name}}</a><br />' +
+    '<a href="http://twitter.com/#!/{{user.screen_name}}/status/{{id}}">{{created_at}}</a><br />' +
+    '{{text}}<br />'
+  , tweet);
+}
