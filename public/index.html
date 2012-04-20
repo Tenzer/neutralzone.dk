@@ -50,18 +50,18 @@
     <script>
       var socket = io.connect('http://localhost:3000');
 
-      socket.on('users', function (data) {
+      socket.on('users', function usersUpdate (data) {
         $.id('status').innerHTML = 'Connected to server. Current users: ' + data.count + '.';
       });
 
-      socket.on('tweet', function (data) {
+      socket.on('tweet', function tweetReceived (data) {
         var item = document.createElement('li');
         item.innerHTML = data.html;
         var list = $.id('tweets');
         list.insertBefore(item, list.firstChild);
       });
 
-      socket.on('error', function (error) {
+      socket.on('error', function errorDetected (error) {
         $.id('status').innerHTML = 'Lost connection to server.';
         console.log(error);
       });
