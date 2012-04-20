@@ -6,51 +6,14 @@
 
 'use strict';
 
-/* Module dependencies */
-
-var express = require('express');
-var https = require('https');
-
-var app = module.exports = express.createServer();
-
-
-/* Configuration */
-
-app.configure(function () {
-  app.set('views', __dirname + '/views');
-  app.set('view engine', 'jade');
-  app.use(express.bodyParser());
-  app.use(express.methodOverride());
-  app.use(app.router);
-  app.use(express.static(__dirname + '/public'));
-});
-
-app.configure('development', function () {
-  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-});
-
-app.configure('production', function () {
-  app.use(express.errorHandler());
-});
-
-
-/* Routes */
-
-app.get('/', function (req, res) {
-  res.render('index', { layout: false, title: 'Live tweets from Danish American Football teams' });
-});
-
-app.listen(3000, function () {
-  console.log('Express server listening on port %d in %s mode', app.address().port, app.settings.env);
-});
-
-
 /* Socket.IO */
 
-var clients = 0;
-var io = require('socket.io').listen(app);
+var io = require('socket.io').listen(3000);
 io.enable('browser client minification');
+io.enable('browser client gzip');
 io.set('log level', 2);
+
+var clients = 0;
 
 io.sockets.on('connection', function (socket) {
   clients++;
