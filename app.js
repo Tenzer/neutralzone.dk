@@ -34,7 +34,7 @@ io.sockets.on('connection', function (socket) {
 
 /* Twitter */
 
-var twitter_options = JSON.parse(require('fs').readFileSync('twitter_options.json'));
+var twitter_options = require('./twitter_options.json');
 
 var latest_tweets = [];
 var Twitter = require('./twitter_streaming.js');
