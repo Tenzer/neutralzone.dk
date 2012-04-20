@@ -1,0 +1,6 @@
+Server side:
+- Make system to persistance across restarts better, ie. only save tweets when Node is shutdown, or when there are updates
+
+Client side:
+- Design!
+- Automatic generation of followers list
