@@ -34,9 +34,20 @@ io.sockets.on('connection', function clientConnected (socket) {
 
 /* Twitter */
 
-var twitter_options = require('./twitter_options.json');
+try {
+  var twitter_options = require('./twitter_options.json');
+} catch (e) {
+  console.error('Could not read "twitter_options.json", reason: ' + e.message);
+  console.error('Quitting!');
+  process.exit(1);
+}
 
-var latest_tweets = [];
+try {
+  var latest_tweets = require('./latest_tweets.json');
+} catch (e) {
+  var latest_tweets = [];
+}
+
 var Twitter = require('./twitter_streaming.js');
 var t = new Twitter(twitter_options);
 
@@ -44,7 +55,7 @@ t.on('tweet', function processNewTweet (tweet) {
   var rendered_tweet = renderTweet(tweet);
   io.sockets.emit('tweet', { html: rendered_tweet });
 
-  if (latest_tweets.push(rendered_tweet) > 5) {
+  if (latest_tweets.push(rendered_tweet) > 10) {
     latest_tweets.shift();
   }
 });
@@ -57,6 +68,11 @@ t.on('error', function processError (e) {
 });
 
 t.getTweets();
+
+var fs = require('fs');
+setInterval(function saveLatestTweets () {
+  fs.writeFile('./latest_tweets.json', JSON.stringify(latest_tweets));
+}, 60000);
 
 
 /* Rendering */
