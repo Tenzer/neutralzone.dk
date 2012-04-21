@@ -43,7 +43,7 @@ try {
 }
 
 try {
-  var latest_tweets = require('./latest_tweets.json');
+  var latest_tweets = require('./latest_tweets.json').tweets;
 } catch (e) {
   var latest_tweets = [];
 }
@@ -71,7 +71,7 @@ t.getTweets();
 
 var fs = require('fs');
 setInterval(function saveLatestTweets () {
-  fs.writeFile('./latest_tweets.json', JSON.stringify(latest_tweets));
+  fs.writeFile('./latest_tweets.json', JSON.stringify({ tweets: latest_tweets }));
 }, 60000);
 
 
