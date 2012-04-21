@@ -20,6 +20,7 @@ var Twitter = function (opts) {
   this.username = opts.username;
   this.password = opts.password;
   this.filter = {};
+  if (opts.follow) this.filter.follow = opts.follow.join(',');
   if (opts.track) this.filter.track = opts.track.join(',');
   if (opts.locations) this.filter.locations = opts.locations.join(',');
 };
