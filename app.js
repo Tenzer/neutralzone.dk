@@ -80,9 +80,10 @@ setInterval(function saveLatestTweets () {
 var mustache = require('mustache');
 
 function renderTweet (tweet) {
+  tweet.timestamp = new Date(tweet.created_at).toJSON();
   return mustache.to_html(
     '@<a href="http://twitter.com/#!/{{user.screen_name}}">{{user.name}}</a><br />' +
-    '<a href="http://twitter.com/#!/{{user.screen_name}}/status/{{id}}">{{created_at}}</a><br />' +
+    '<time datetime="{{timestamp}}">{{timestamp}}</time><br />' +
     '{{text}}<br />'
   , tweet);
 }
