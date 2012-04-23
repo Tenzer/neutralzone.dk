@@ -46,23 +46,22 @@
     <ul id='tweets'></ul>
 
     <script src='http://localhost:3000/socket.io/socket.io.v0.9.6.js'></script>
-    <script src='js/tinyDOM.a59fd17e00.min.js'></script>
     <script>
       var socket = io.connect('http://localhost:3000');
 
       socket.on('users', function usersUpdate (data) {
-        $.id('status').innerHTML = 'Connected to server. Current users: ' + data.count + '.';
+        document.getElementById('status').innerHTML = 'Connected to server. Current users: ' + data.count + '.';
       });
 
       socket.on('tweet', function tweetReceived (data) {
         var item = document.createElement('li');
         item.innerHTML = data.html;
-        var list = $.id('tweets');
+        var list = document.getElementById('tweets');
         list.insertBefore(item, list.firstChild);
       });
 
       socket.on('error', function errorDetected (error) {
-        $.id('status').innerHTML = 'Lost connection to server.';
+        document.getElementById('status').innerHTML = 'Lost connection to server.';
         console.log(error);
       });
     </script>
