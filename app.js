@@ -83,7 +83,15 @@ function renderTweet (tweet) {
   tweet.timestamp = new Date(tweet.created_at).toJSON();
   return mustache.to_html(
     '@<a href="http://twitter.com/#!/{{user.screen_name}}">{{user.name}}</a><br />' +
-    '<time datetime="{{timestamp}}">{{timestamp}}</time><br />' +
+    '<time datetime="{{timestamp}}">Less than a minute ago</time><br />' +
     '{{text}}<br />'
   , tweet);
 }
+
+
+/* Update time since */
+
+// Time is pushed from the server to the clients, in order to avoid clients with wrong time settings
+setInterval(function updateTime() {
+  io.sockets.emit('time', { now: new Date().getTime() });
+}, 10000);
