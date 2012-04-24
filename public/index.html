@@ -49,6 +49,7 @@
     <script src='fuzzytime.js'></script>
     <script>
       var socket = io.connect('http://localhost:3000');
+      var tweets_element = document.getElementById('tweets');
 
       socket.on('users', function usersUpdate (data) {
         document.getElementById('status').innerHTML = 'Connected to server. Current users: ' + data.count + '.';
@@ -57,8 +58,7 @@
       socket.on('tweet', function tweetReceived (data) {
         var item = document.createElement('li');
         item.innerHTML = data.html;
-        var list = document.getElementById('tweets');
-        list.insertBefore(item, list.firstChild);
+        tweets_element.insertBefore(item, tweets_element.firstChild);
       });
 
       socket.on('error', function errorDetected (error) {
