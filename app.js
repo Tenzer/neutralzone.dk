@@ -25,6 +25,9 @@ io.sockets.on('connection', function clientConnected (socket) {
     socket.emit('tweet', { html: latest_tweets[i] });
   }
 
+  // Sends out the server time to the new client, in order for goFuzzy() to be called
+  socket.emit('time', { now: new Date().getTime() });
+
   socket.on('disconnect', function clientDisconnected () {
     clients--;
     socket.broadcast.emit('users', { count: clients });
