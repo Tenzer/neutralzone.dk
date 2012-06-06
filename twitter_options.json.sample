@@ -1,10 +1,13 @@
 {
-  "username": "<username>",
-  "password": "<password>",
-  "follow": [
-    15042107
-  ],
-  "locations": [
-    "8.04,54.68,12.64,57.71"
-  ]
+  "oauth_credentials": {
+    "consumer_key": "Twitter",
+    "consumer_secret": "API",
+    "access_token_key": "keys",
+    "access_token_secret": "go here"
+  },
+  "filter": {
+    "follow": "15042107",
+    "locations": "8.04,54.68,12.64,57.71",
+    "track": "amerikansk fodbold"
+  }
 }

@@ -16,6 +16,7 @@ io.set('log level', 2);
 var clients = 0;
 
 io.sockets.on('connection', function clientConnected (socket) {
+  // Sends out new user count when a new client is connected
   clients++;
   socket.emit('users', { count: clients });
   socket.broadcast.emit('users', { count: clients });
@@ -28,6 +29,7 @@ io.sockets.on('connection', function clientConnected (socket) {
   // Sends out the server time to the new client, in order for goFuzzy() to be called
   socket.emit('time', { now: new Date().getTime() });
 
+  // Sends out new user count when a client disconnect
   socket.on('disconnect', function clientDisconnected () {
     clients--;
     socket.broadcast.emit('users', { count: clients });
@@ -51,26 +53,42 @@ try {
   var latest_tweets = [];
 }
 
-var Twitter = require('./twitter_streaming.js');
-var t = new Twitter(twitter_options);
+var Twitter = require('ntwitter');
+var t = new Twitter(twitter_options.oauth_credentials);
 
-t.on('tweet', function processNewTweet (tweet) {
-  var rendered_tweet = renderTweet(tweet);
-  io.sockets.emit('tweet', { html: rendered_tweet });
-
-  if (latest_tweets.push(rendered_tweet) > 10) {
-    latest_tweets.shift();
+t.verifyCredentials(function testCredentials(err, data) {
+  if (err) {
+    console.error('Got the following error when testing Twitter credentials:');
+    console.error(err);
+    console.error('Quitting!');
+    process.exit(1);
   }
 });
 
-t.on('error', function processError (e) {
-  console.error('ERROR: Received following error message from Twitter handler:');
-  console.error(e.message);
-  console.error('Quitting now!');
-  process.exit(1);
-});
+t.stream('statuses/filter', twitter_options.filter, function twitterStream(ts) {
+  ts.on('data', function processNewTweet (tweet) {
+    var rendered_tweet = renderTweet(tweet);
+    io.sockets.emit('tweet', { html: rendered_tweet });
 
-t.getTweets();
+    if (latest_tweets.push(rendered_tweet) > 10) {
+      latest_tweets.shift();
+    }
+  });
+
+  ts.on('end', function processError (e) {
+    console.error('ERROR: Received following error message from Twitter handler:');
+    console.error(e.message);
+    console.error('Quitting now!');
+    process.exit(1);
+  });
+
+  ts.on('destroy', function processError (e) {
+    console.error('ERROR: Got disconnected from Twitter:');
+    console.error(e.message);
+    console.error('Quitting now!');
+    process.exit(1);
+  });
+});
 
 var fs = require('fs');
 setInterval(function saveLatestTweets () {

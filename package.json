@@ -4,6 +4,7 @@
   , "private": true
   , "dependencies": {
     "socket.io": "0.9.6",
-    "mustache": "~0.4.0"
+    "mustache": "~0.4.0",
+    "ntwitter": "~0.3.0"
   }
 }
