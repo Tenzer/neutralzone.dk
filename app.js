@@ -56,7 +56,7 @@ try {
 var Twitter = require('ntwitter');
 var t = new Twitter(twitter_options.oauth_credentials);
 
-t.verifyCredentials(function testCredentials(err, data) {
+t.verifyCredentials(function testCredentials (err, data) {
   if (err) {
     console.error('Got the following error when testing Twitter credentials:');
     console.error(err);
@@ -103,8 +103,8 @@ var mustache = require('mustache');
 function renderTweet (tweet) {
   tweet.timestamp = new Date(tweet.created_at).toJSON();
   return mustache.to_html(
-    '@<a href="http://twitter.com/#!/{{user.screen_name}}">{{user.name}}</a><br />' +
-    '<time datetime="{{timestamp}}">Less than a minute ago</time><br />' +
+    '@<a class="screenname" href="http://twitter.com/{{user.screen_name}}">{{user.name}}</a><br />' +
+    '<a href="http://twitter.com/{{user.screen_name}}/status/{{id_str}}"><time datetime="{{timestamp}}">Less than a minute ago</time></a><br />' +
     '{{text}}<br />'
   , tweet);
 }
