@@ -92,6 +92,10 @@ t.stream('statuses/filter', twitter_options.filter, function twitterStream(ts) {
     console.error('Quitting now!');
     process.exit(1);
   });
+
+  ts.on('missedHeartbeat', function missedHeartbeat () {
+    console.error('No heartbeat has been received within the last 30 seconds');
+  });
 });
 
 var fs = require('fs');
