@@ -58,8 +58,16 @@
 
       socket.on('tweet', function tweetReceived (data) {
         var item = document.createElement('li');
+        item.setAttribute('id', data.tweetId);
         item.innerHTML = data.html;
         tweets_element.insertBefore(item, tweets_element.firstChild);
+      });
+
+      socket.on('delete', function tweetDeleted (data) {
+        var tweet = document.getElementById(data.tweetId);
+        if (tweet) {
+          tweet.parentNode.removeChild(tweet);
+        }
       });
 
       socket.on('error', function errorDetected (error) {

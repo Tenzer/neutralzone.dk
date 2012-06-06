@@ -67,11 +67,15 @@ t.verifyCredentials(function testCredentials (err, data) {
 
 t.stream('statuses/filter', twitter_options.filter, function twitterStream(ts) {
   ts.on('data', function processNewTweet (tweet) {
-    var rendered_tweet = renderTweet(tweet);
-    io.sockets.emit('tweet', { html: rendered_tweet });
+    if (tweet['delete']) {
+      io.sockets.emit('delete', { tweetId: tweet['delete'].status.id_str });
+    } else {
+      var rendered_tweet = renderTweet(tweet);
+      io.sockets.emit('tweet', { html: rendered_tweet, tweetId: tweet.id_str });
 
-    if (latest_tweets.push(rendered_tweet) > 10) {
-      latest_tweets.shift();
+      if (latest_tweets.push(rendered_tweet) > 10) {
+        latest_tweets.shift();
+      }
     }
   });
 
