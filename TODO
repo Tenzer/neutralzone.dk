@@ -1,5 +1,4 @@
 Server side:
-- Make system to persistance across restarts better, ie. only save tweets when Node is shutdown, or when there are updates
 - Make links pretty, and add links to referenced Twitter handles
 - Filter out tweets that only were created by the users specified on the list in twitter_options.json
 

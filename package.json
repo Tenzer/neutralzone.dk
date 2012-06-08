@@ -1,10 +1,11 @@
 {
-    "name": "neutralzone.dk"
-  , "version": "0.0.1"
-  , "private": true
-  , "dependencies": {
+  "name": "neutralzone.dk",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
     "socket.io": "0.9.6",
     "mustache": "~0.4.0",
-    "ntwitter": "~0.3.0"
+    "immortal-ntwitter": "git://github.com/horixon/immortal-ntwitter.git",
+    "tiny": "~0.0.8"
   }
 }

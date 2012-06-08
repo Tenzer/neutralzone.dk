@@ -6,6 +6,57 @@
 
 'use strict';
 
+/* Tiny */
+
+var tiny = require('tiny');
+var db;
+
+tiny('latest_tweets.tiny', function openDatabase (err, tinydb) {
+  if (err) {
+    console.error('Error occurred when trying to open database:');
+    console.error(err);
+    console.error('Quitting!');
+  }
+
+  db = tinydb;
+});
+
+function storeTweet (tweet) {
+  db.set(tweet.id_str, {
+    id: tweet.id_str,
+    timestamp: Date.now(),
+    tweet: tweet
+  }, function afterSave (err) {
+    if (err) {
+      console.error('Error when saving tweet in database:');
+      console.error(err);
+    }
+  });
+}
+
+function tweetDeleted (err) {
+  if (err) {
+    console.error('Error deleting tweet:');
+    console.error(err);
+  }
+}
+
+setInterval(function removeOldTweets () {
+  db.find({
+    timestamp: {
+      $lt: Date.now() - 604800 // One week
+    }
+  })
+  .shallow()(function deleteTweets (err, tweets) {
+    var timer = Date.now();
+    for (var i = 0; i < tweets.length; i++) {
+      db.remove(tweets[i].id, tweetDeleted);
+    }
+    console.log('Deleted ' + tweets.length + ' old tweets in ' + (Date.now() - timer) + ' seconds');
+  });
+}, 3600000); // Every hour
+
+
 /* Socket.IO */
 
 var io = require('socket.io').listen(3000);
@@ -21,10 +72,18 @@ io.sockets.on('connection', function clientConnected (socket) {
   socket.emit('users', { count: clients });
   socket.broadcast.emit('users', { count: clients });
 
-  // Sends out the latest tweets to new users
-  for (var i = 0; i < latest_tweets.length; i++) {
-    socket.emit('tweet', { html: latest_tweets[i] });
-  }
+  // Sends out the latest tweets (max 20) to new users
+  db.find({
+    timestamp: {
+      $gt: Date.now() - 604800 // One week
+    }
+  })
+  .asc('timestamp')
+  .limit(20)(function sendOldTweets (err, tweets) {
+    for (var i = 0; i < tweets.length; i++) {
+      socket.emit('tweet', { html: renderTweet(tweets[i].tweet), tweetId: tweets[i].id });
+    }
+  });
 
   // Sends out the server time to the new client, in order for goFuzzy() to be called
   socket.emit('time', { now: new Date().getTime() });
@@ -47,14 +106,7 @@ try {
   process.exit(1);
 }
 
-try {
-  var latest_tweets = require('./latest_tweets.json').tweets;
-} catch (e) {
-  var latest_tweets = [];
-}
-
-var Twitter = require('ntwitter');
-var t = new Twitter(twitter_options.oauth_credentials);
+var t = require('immortal-ntwitter').create(twitter_options.oauth_credentials);
 
 t.verifyCredentials(function testCredentials (err, data) {
   if (err) {
@@ -65,43 +117,34 @@ t.verifyCredentials(function testCredentials (err, data) {
   }
 });
 
-t.stream('statuses/filter', twitter_options.filter, function twitterStream(ts) {
+t.immortalStream('statuses/filter', twitter_options.filter, function twitterStream (ts) {
   ts.on('data', function processNewTweet (tweet) {
-    if (tweet['delete']) {
-      io.sockets.emit('delete', { tweetId: tweet['delete'].status.id_str });
-    } else {
-      var rendered_tweet = renderTweet(tweet);
-      io.sockets.emit('tweet', { html: rendered_tweet, tweetId: tweet.id_str });
+    io.sockets.emit('tweet', { html: renderTweet(tweet), tweetId: tweet.id_str });
+    storeTweet(tweet);
+  });
 
-      if (latest_tweets.push(rendered_tweet) > 10) {
-        latest_tweets.shift();
+  ts.on('delete', function deleteTweet (tweet) {
+    console.log('Delete event received, content:'); // Debugging
+    console.log(tweet);
+    io.sockets.emit('delete', { tweetId: tweet['delete'].status.id_str });
+    db.remove(tweet['delete'].status.id_str, function deleteTweet (err) {
+      if (err) {
+        console.error('Error deleting tweet:');
+        console.error(err);
       }
-    }
+    });
   });
 
-  ts.on('end', function processError (e) {
-    console.error('ERROR: Received following error message from Twitter handler:');
-    console.error(e.message);
-    console.error('Quitting now!');
-    process.exit(1);
+  ts.on('limit', function limitReceived (data) {
+    console.log('Limit event received, content:');
+    console.log(data);
   });
 
-  ts.on('destroy', function processError (e) {
-    console.error('ERROR: Got disconnected from Twitter:');
-    console.error(e.message);
-    console.error('Quitting now!');
-    process.exit(1);
-  });
-
-  ts.on('missedHeartbeat', function missedHeartbeat () {
-    console.error('No heartbeat has been received within the last 30 seconds');
+  ts.on('scrub_geo', function scrubGeoReceived (data) {
+    console.log('Scrub Geo event received, content:');
+    console.log(data);
   });
 });
-
-var fs = require('fs');
-setInterval(function saveLatestTweets () {
-  fs.writeFile('./latest_tweets.json', JSON.stringify({ tweets: latest_tweets }));
-}, 60000);
 
 
 /* Rendering */
@@ -123,4 +166,4 @@ function renderTweet (tweet) {
 // Time is pushed from the server to the clients, in order to avoid clients with wrong time settings
 setInterval(function updateTime() {
   io.sockets.emit('time', { now: new Date().getTime() });
-}, 10000);
+}, 15000);
