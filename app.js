@@ -13,9 +13,8 @@ var db;
 
 tiny('latest_tweets.tiny', function openDatabase (err, tinydb) {
   if (err) {
-    console.error('Error occurred when trying to open database:');
-    console.error(err);
-    console.error('Quitting!');
+    console.error('Error opening database: %s\nQuitting!', err);
+    process.exit(1);
   }
 
   db = tinydb;
@@ -28,17 +27,9 @@ function storeTweet (tweet) {
     tweet: tweet
   }, function afterSave (err) {
     if (err) {
-      console.error('Error when saving tweet in database:');
-      console.error(err);
+      console.error('Error saving tweet: %s', err);
     }
   });
-}
-
-function tweetDeleted (err) {
-  if (err) {
-    console.error('Error deleting tweet:');
-    console.error(err);
-  }
 }
 
 setInterval(function removeOldTweets () {
@@ -48,8 +39,18 @@ setInterval(function removeOldTweets () {
     }
   })
   .shallow()(function deleteTweets (err, tweets) {
+    if (err) {
+      console.error('Error getting tweets for deletion: %s', err);
+    }
+
     var timer = Date.now();
     var size_before = db.size;
+
+    function tweetDeleted (err) {
+      if (err) {
+        console.error('Error deleting tweet: %s', err);
+      }
+    }
 
     for (var i = 0; i < tweets.length; i++) {
       db.remove(tweets[i].id, tweetDeleted);
@@ -61,7 +62,12 @@ setInterval(function removeOldTweets () {
         console.error(err);
       }
 
-      console.log('Deleted ' + tweets.length + ' old tweets in ' + (Date.now() - timer) + ' seconds.\nCompacting saved ' + (size_before - db.size) + ' bytes.');
+      console.log('Deleted %d old tweets and compated database in %d ms. ' +
+        'Compacting saved %d bytes.',
+        tweets.length,
+        Date.now() - timer,
+        size_before - db.size
+      );
     });
   });
 }, 21600000); // Every six hours
@@ -91,10 +97,15 @@ io.sockets.on('connection', function clientConnected (socket) {
   .asc('timestamp')
   .limit(20)(function sendOldTweets (err, tweets) {
     for (var i = 0; i < tweets.length; i++) {
-      socket.emit('tweet', { html: renderTweet(tweets[i].tweet), tweetId: tweets[i].id });
+      socket.emit('tweet',
+        {
+          html: renderTweet(tweets[i].tweet),
+          tweetId: tweets[i].id
+        }
+      );
     }
 
-    // Sends out the server time to the new client, in order for goFuzzy() to be called
+    // Sends out the server time to the new client, this calls goFuzzy()
     socket.emit('time', { now: new Date().getTime() });
   });
 
@@ -109,50 +120,51 @@ io.sockets.on('connection', function clientConnected (socket) {
 /* Twitter */
 
 try {
-  var twitter_options = require('./twitter_options.json');
+  var t_opts = require('./twitter_options.json');
 } catch (e) {
-  console.error('Could not read "twitter_options.json", reason: ' + e.message);
-  console.error('Quitting!');
+  console.error('Error reading twitter_options.json: %s\nQuitting!', e.message);
   process.exit(1);
 }
 
-var t = require('immortal-ntwitter').create(twitter_options.oauth_credentials);
+var t = require('immortal-ntwitter').create(t_opts.oauth_credentials);
 
 t.verifyCredentials(function testCredentials (err, data) {
   if (err) {
-    console.error('Got the following error when testing Twitter credentials:');
-    console.error(err);
-    console.error('Quitting!');
+    console.error('Error verifying Twitter credentials: %s\nQuitting!', err);
     process.exit(1);
   }
 });
 
-t.immortalStream('statuses/filter', twitter_options.filter, function twitterStream (ts) {
+t.immortalStream('statuses/filter', t_opts.filter, function twitterStream (ts) {
   ts.on('data', function processNewTweet (tweet) {
-    io.sockets.emit('tweet', { html: renderTweet(tweet), tweetId: tweet.id_str });
+    io.sockets.emit('tweet',
+      {
+        html: renderTweet(tweet),
+        tweetId: tweet.id_str
+      }
+    );
+
     storeTweet(tweet);
   });
 
   ts.on('delete', function deleteTweet (tweet) {
-    console.log('Delete event received, content:'); // Debugging
-    console.log(tweet);
+    console.log('Delete event received, content: %s', tweet); // Debugging
+
     io.sockets.emit('delete', { tweetId: tweet['delete'].status.id_str });
+
     db.remove(tweet['delete'].status.id_str, function deleteTweet (err) {
       if (err) {
-        console.error('Error deleting tweet:');
-        console.error(err);
+        console.error('Error deleting tweet: %s', err);
       }
     });
   });
 
   ts.on('limit', function limitReceived (data) {
-    console.log('Limit event received, content:');
-    console.log(data);
+    console.log('Limit event received, content: %s', data);
   });
 
   ts.on('scrub_geo', function scrubGeoReceived (data) {
-    console.log('Scrub Geo event received, content:');
-    console.log(data);
+    console.log('Scrub Geo event received, content: %s', data);
   });
 });
 
@@ -173,7 +185,8 @@ function renderTweet (tweet) {
 
 /* Update time since */
 
-// Time is pushed from the server to the clients, in order to avoid clients with wrong time settings
+// Time is pushed from the server to the clients
+// This is in order to avoid clients with wrong time settings
 setInterval(function updateTime() {
   io.sockets.emit('time', { now: new Date().getTime() });
 }, 15000);
