@@ -78,7 +78,15 @@ setInterval(function removeOldTweets () {
 var io = require('socket.io').listen(3000);
 io.enable('browser client minification');
 io.enable('browser client gzip');
-io.set('log level', 2);
+io.set('log', false);
+io.set('authorization', function logNewClient (data, callback) {
+  console.log('New connection from: %s (%s)',
+    data.address.address,
+    data.headers['user-agent']
+  );
+
+  callback(null, true);
+});
 
 var clients = 0;
 
