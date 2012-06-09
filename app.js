@@ -61,7 +61,7 @@ setInterval(function removeOldTweets () {
         console.error(err);
       }
 
-      console.log('Deleted ' + tweets.length + ' old tweets in ' + (Date.now() - timer) + ' seconds.\nCompacting saved ' + (size_before - db.size) ' bytes.');
+      console.log('Deleted ' + tweets.length + ' old tweets in ' + (Date.now() - timer) + ' seconds.\nCompacting saved ' + (size_before - db.size) + ' bytes.');
     });
   });
 }, 21600000); // Every six hours
