@@ -83,10 +83,10 @@ io.sockets.on('connection', function clientConnected (socket) {
     for (var i = 0; i < tweets.length; i++) {
       socket.emit('tweet', { html: renderTweet(tweets[i].tweet), tweetId: tweets[i].id });
     }
-  });
 
-  // Sends out the server time to the new client, in order for goFuzzy() to be called
-  socket.emit('time', { now: new Date().getTime() });
+    // Sends out the server time to the new client, in order for goFuzzy() to be called
+    socket.emit('time', { now: new Date().getTime() });
+  });
 
   // Sends out new user count when a client disconnect
   socket.on('disconnect', function clientDisconnected () {
