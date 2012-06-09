@@ -102,9 +102,9 @@ io.sockets.on('connection', function clientConnected (socket) {
       $gt: Date.now() - 604800000 // One week
     }
   })
-  .asc('timestamp')
+  .desc('timestamp')
   .limit(20)(function sendOldTweets (err, tweets) {
-    for (var i = 0; i < tweets.length; i++) {
+    for (var i = tweets.length - 1; i >= 0; i--) {
       socket.emit('tweet',
         {
           html: renderTweet(tweets[i].tweet),
