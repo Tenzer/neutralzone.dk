@@ -44,7 +44,7 @@ function tweetDeleted (err) {
 setInterval(function removeOldTweets () {
   db.find({
     timestamp: {
-      $lt: Date.now() - 604800 // One week
+      $lt: Date.now() - 604800000 // One week
     }
   })
   .shallow()(function deleteTweets (err, tweets) {
@@ -54,7 +54,7 @@ setInterval(function removeOldTweets () {
     }
     console.log('Deleted ' + tweets.length + ' old tweets in ' + (Date.now() - timer) + ' seconds');
   });
-}, 3600000); // Every hour
+}, 21600000); // Every six hours
 
 
 /* Socket.IO */
@@ -75,7 +75,7 @@ io.sockets.on('connection', function clientConnected (socket) {
   // Sends out the latest tweets (max 20) to new users
   db.find({
     timestamp: {
-      $gt: Date.now() - 604800 // One week
+      $gt: Date.now() - 604800000 // One week
     }
   })
   .asc('timestamp')
