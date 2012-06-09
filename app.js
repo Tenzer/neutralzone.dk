@@ -49,10 +49,20 @@ setInterval(function removeOldTweets () {
   })
   .shallow()(function deleteTweets (err, tweets) {
     var timer = Date.now();
+    var size_before = db.size;
+
     for (var i = 0; i < tweets.length; i++) {
       db.remove(tweets[i].id, tweetDeleted);
     }
-    console.log('Deleted ' + tweets.length + ' old tweets in ' + (Date.now() - timer) + ' seconds');
+
+    db.compact(function dbCompacted (err) {
+      if (err) {
+        console.error('Error compacting database:');
+        console.error(err);
+      }
+
+      console.log('Deleted ' + tweets.length + ' old tweets in ' + (Date.now() - timer) + ' seconds.\nCompacting saved ' + (size_before - db.size) ' bytes.');
+    });
   });
 }, 21600000); // Every six hours
 
