@@ -48,7 +48,10 @@ setInterval(function removeOldTweets () {
 
     function tweetDeleted (err) {
       if (err) {
-        console.error('Error deleting tweet: %s', err);
+        // Ignore error if no records were found
+        if (err.toString() !== 'Error: No records.') {
+          console.error('Error deleting tweet: %s', err);
+        }
       }
     }
 
