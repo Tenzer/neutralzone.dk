@@ -4,27 +4,17 @@
     <meta charset='utf-8' />
     <title>Neutral Zone</title>
     <style type='text/css'>
-      header, aside, footer {
-        display: block;
-      }
-
-      header {
-        width: 100%;
-        text-align: center;
-      }
-
-      aside {
-        float: left;
-        width: 20%;
-      }
-
-      ul#tweets {
-        float: right;
-        width: 75%;
+      header, ul#tweets, footer {
+        margin: 0 auto;
+        width: 900px;
       }
 
       ul#tweets li {
         margin-bottom: 10px;
+      }
+
+      footer {
+        text-align: center;
       }
     </style>
   </head>
@@ -33,22 +23,12 @@
       <img src='images/banner.png' alt='Neutral Zone - Live tweets from Danish American football teams' />
     </header>
 
-    <aside>
-      <p>Twitter accounts followed:</p>
-      <ul id='followers-list'>
-        <li><a href='http://twitter.com/#!/AmagerDemons'>Amager Demons</a></li>
-        <li><a href='http://twitter.com/#!/CPHTowers'>Copenhagen Towers</a></li>
-        <li><a href='http://twitter.com/#!/EsbHurricanes'>Esbjerg Hurricanes</a></li>
-        <li><a href='http://twitter.com/#!/Hrebels'>Herlev Rebels</a></li>
-        <li><a href='http://twitter.com/#!/GoldDiggers'>Søllerød Gold Diggers</a></li>
-        <li><a href='http://twitter.com/#!/RzrbckDK'>Triangle Razorbacks</a></li>
-        <li><a href='http://twitter.com/#!/USfootballdk'>USfootball</a></li>
-      </ul>
+    <ul id='tweets'></ul>
+
+    <footer>
       <p id='credits'>This page is made by <a href='http://tenzer.dk/'>Jeppe Toustrup</a> and <a href='http://teige.dk/'>Nicklas Teige</a>.</p>
       <p id='status'>Not connected to server.</p>
-    </aside>
-
-    <ul id='tweets'></ul>
+    </footer>
 
     <script src='http://neutralzone.dk:3000/socket.io/socket.io.v0.9.6.js'></script>
     <script src='fuzzytime.js'></script>
@@ -57,7 +37,8 @@
       var tweets_element = document.getElementById('tweets');
 
       socket.on('users', function usersUpdate (data) {
-        document.getElementById('status').innerHTML = 'Connected to server. Current users: ' + data.count + '.';
+        document.getElementById('status').innerHTML = 'Connected to server. ' +
+          'Current users: ' + data.count + '.';
       });
 
       socket.on('tweet', function tweetReceived (data) {
