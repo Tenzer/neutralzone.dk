@@ -56,19 +56,10 @@ setInterval(function removeOldTweets () {
       db.remove(tweets[i].id, tweetDeleted);
     }
 
-    db.compact(function dbCompacted (err) {
-      if (err) {
-        console.error('Error compacting database:');
-        console.error(err);
-      }
-
-      console.log('Deleted %d old tweets and compated database in %d ms. ' +
-        'Compacting saved %d bytes.',
+    console.log('Deleted %d old tweets in %d ms.',
         tweets.length,
-        Date.now() - timer,
-        size_before - db.size
-      );
-    });
+        Date.now() - timer
+    );
   });
 }, 21600000); // Every six hours
 
