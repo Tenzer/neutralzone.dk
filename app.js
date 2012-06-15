@@ -11,7 +11,7 @@
 var tiny = require('tiny');
 var db;
 
-tiny('latest_tweets.tiny', function openDatabase (err, tinydb) {
+tiny(__dirname + '/latest_tweets.tiny', function openDatabase (err, tinydb) {
   if (err) {
     console.error('Error opening database: %s\nQuitting!', err);
     process.exit(1);
@@ -129,7 +129,7 @@ io.sockets.on('connection', function clientConnected (socket) {
 /* Twitter */
 
 try {
-  var t_opts = require('./twitter_options.json');
+  var t_opts = require(__dirname + '/twitter_options.json');
 } catch (e) {
   console.error('Error reading twitter_options.json: %s\nQuitting!', e.message);
   process.exit(1);
