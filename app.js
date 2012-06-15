@@ -73,6 +73,7 @@ var express = require('express');
 var app = express.createServer();
 
 app.use(express.static(__dirname + '/public'));
+app.use(express.logger());
 
 app.get('/', function (req, res) {
   res.sendfile(__dirname + '/public/index.html');
@@ -87,14 +88,6 @@ var io = require('socket.io').listen(app);
 io.enable('browser client minification');
 io.enable('browser client gzip');
 io.set('log', false);
-io.set('authorization', function logNewClient (data, callback) {
-  console.log('New connection from: %s (%s)',
-    data.address.address,
-    data.headers['user-agent']
-  );
-
-  callback(null, true);
-});
 
 var clients = 0;
 
