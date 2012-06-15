@@ -30,10 +30,10 @@
       <p id='status'>Not connected to server.</p>
     </footer>
 
-    <script src='http://neutralzone.dk:3000/socket.io/socket.io.v0.9.6.js'></script>
+    <script src='socket.io/socket.io.v0.9.6.js'></script>
     <script src='fuzzytime.js'></script>
     <script>
-      var socket = io.connect('http://neutralzone.dk:3000');
+      var socket = io.connect();
       var tweets_element = document.getElementById('tweets');
 
       socket.on('users', function usersUpdate (data) {

@@ -67,9 +67,23 @@ setInterval(function removeOldTweets () {
 }, 21600000); // Every six hours
 
 
+/* Express */
+
+var express = require('express');
+var app = express.createServer();
+
+app.use(express.static(__dirname + '/public'));
+
+app.get('/', function (req, res) {
+  res.sendfile(__dirname + '/public/index.html');
+});
+
+app.listen(process.env['app_port'] || 3000);
+
+
 /* Socket.IO */
 
-var io = require('socket.io').listen(3000);
+var io = require('socket.io').listen(app);
 io.enable('browser client minification');
 io.enable('browser client gzip');
 io.set('log', false);
