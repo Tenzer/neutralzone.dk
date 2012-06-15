@@ -72,7 +72,6 @@ setInterval(function removeOldTweets () {
 var express = require('express');
 var app = express.createServer();
 
-app.use(require('connect-proxy').realValues());
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', function (req, res) {
