@@ -113,7 +113,7 @@ io.sockets.on('connection', function clientConnected (socket) {
           pic_url: tweets[i].tweet.user.profile_image_url,
           screen_name: tweets[i].tweet.user.screen_name,
           name: tweets[i].tweet.user.name,
-          timestamp: tweets[i].timestamp,
+          timestamp: new Date(tweets[i].timestamp).toJSON(),
           text: renderTweet(tweets[i].tweet)
         }
       );
