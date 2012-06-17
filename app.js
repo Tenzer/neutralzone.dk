@@ -107,10 +107,15 @@ io.sockets.on('connection', function clientConnected (socket) {
   .desc('timestamp')
   .limit(20)(function sendOldTweets (err, tweets) {
     for (var i = tweets.length - 1; i >= 0; i--) {
+      var tweet = tweets[i].tweet;
       socket.emit('tweet',
         {
-          html: renderTweet(tweets[i].tweet),
-          tweetId: tweets[i].id
+          id: tweet.id_str,
+          pic_url: tweet.user.profile_image_url,
+          screen_name: tweet.user.screen_name,
+          name: tweet.user.name,
+          timestamp: new Date(tweet.created_at).toJSON(),
+          text: renderTweet(tweet)
         }
       );
     }
