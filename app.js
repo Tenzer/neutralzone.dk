@@ -145,8 +145,20 @@ t.verifyCredentials(function testCredentials (err, data) {
   }
 });
 
-t.immortalStream('statuses/filter', t_opts.filter, function twitterStream (ts) {
+t.immortalStream('statuses/filter', {
+  follow: t_opts.follow.join(',')
+}, function twitterStream (ts) {
   ts.on('data', function processNewTweet (tweet) {
+    if (t_opts.follow.indexOf(tweet.user.id) === -1) {
+      // Ignore tweets not coming from accounts followed
+      return;
+    }
+    if (tweet.in_reply_to_user_id &&
+        t_opts.follow.indexOf(tweet.user.id) === -1) {
+      // Ignore replies to accounts not followed
+      return;
+    }
+
     io.sockets.emit('tweet',
       {
         html: renderTweet(tweet),
