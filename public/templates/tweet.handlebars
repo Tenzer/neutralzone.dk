@@ -1,0 +1,50 @@
+(function() {
+  var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
+templates['tweet'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  helpers = helpers || Handlebars.helpers;
+  var buffer = "", stack1, foundHelper, self=this, functionType="function", helperMissing=helpers.helperMissing, undef=void 0, escapeExpression=this.escapeExpression;
+
+
+  buffer += "<a class=\"profile-pic\" href=\"http://twitter.com/";
+  foundHelper = helpers.screen_name;
+  stack1 = foundHelper || depth0.screen_name;
+  if(typeof stack1 === functionType) { stack1 = stack1.call(depth0, { hash: {} }); }
+  else if(stack1=== undef) { stack1 = helperMissing.call(depth0, "screen_name", { hash: {} }); }
+  buffer += escapeExpression(stack1) + "\">\n  <img src=\"";
+  foundHelper = helpers.pic_url;
+  stack1 = foundHelper || depth0.pic_url;
+  if(typeof stack1 === functionType) { stack1 = stack1.call(depth0, { hash: {} }); }
+  else if(stack1=== undef) { stack1 = helperMissing.call(depth0, "pic_url", { hash: {} }); }
+  buffer += escapeExpression(stack1) + "\" width=\"48px\" height=\"48px\" />\n</a>\n<a class=\"username\" href=\"http://twitter.com/";
+  foundHelper = helpers.screen_name;
+  stack1 = foundHelper || depth0.screen_name;
+  if(typeof stack1 === functionType) { stack1 = stack1.call(depth0, { hash: {} }); }
+  else if(stack1=== undef) { stack1 = helperMissing.call(depth0, "screen_name", { hash: {} }); }
+  buffer += escapeExpression(stack1) + "\">";
+  foundHelper = helpers.name;
+  stack1 = foundHelper || depth0.name;
+  if(typeof stack1 === functionType) { stack1 = stack1.call(depth0, { hash: {} }); }
+  else if(stack1=== undef) { stack1 = helperMissing.call(depth0, "name", { hash: {} }); }
+  buffer += escapeExpression(stack1) + "</a><br />\n<a class=\"timestamp\" href=\"http://twitter.com/";
+  foundHelper = helpers.screen_name;
+  stack1 = foundHelper || depth0.screen_name;
+  if(typeof stack1 === functionType) { stack1 = stack1.call(depth0, { hash: {} }); }
+  else if(stack1=== undef) { stack1 = helperMissing.call(depth0, "screen_name", { hash: {} }); }
+  buffer += escapeExpression(stack1) + "/status/";
+  foundHelper = helpers.id;
+  stack1 = foundHelper || depth0.id;
+  if(typeof stack1 === functionType) { stack1 = stack1.call(depth0, { hash: {} }); }
+  else if(stack1=== undef) { stack1 = helperMissing.call(depth0, "id", { hash: {} }); }
+  buffer += escapeExpression(stack1) + "\"><time datetime=\"";
+  foundHelper = helpers.timestamp;
+  stack1 = foundHelper || depth0.timestamp;
+  if(typeof stack1 === functionType) { stack1 = stack1.call(depth0, { hash: {} }); }
+  else if(stack1=== undef) { stack1 = helperMissing.call(depth0, "timestamp", { hash: {} }); }
+  buffer += escapeExpression(stack1) + "\">Less than a minute ago</time></a><br />\n";
+  foundHelper = helpers.text;
+  stack1 = foundHelper || depth0.text;
+  if(typeof stack1 === functionType) { stack1 = stack1.call(depth0, { hash: {} }); }
+  else if(stack1=== undef) { stack1 = helperMissing.call(depth0, "text", { hash: {} }); }
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  return buffer;});
+})();

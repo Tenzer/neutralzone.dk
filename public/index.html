@@ -4,17 +4,42 @@
     <meta charset='utf-8' />
     <title>Neutral Zone</title>
     <style type='text/css'>
+      body {
+        background-color: white;
+        font-family: sans-serif;
+      }
+
       header, ul#tweets, footer {
         margin: 0 auto;
         width: 900px;
       }
 
-      ul#tweets li {
-        margin-bottom: 10px;
-      }
-
       footer {
         text-align: center;
+      }
+
+      ul#tweets li {
+        display: block;
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+        width: 850px;
+      }
+
+      a {
+        color: darkblue;
+      }
+
+      a.profile-pic {
+        float: left;
+        margin: 5px 10px 10px 0;
+      }
+
+      a.username {
+        font-weight: 700;
+      }
+
+      a.timestamp {
+        font-style: italic;
       }
     </style>
   </head>
@@ -32,6 +57,8 @@
 
     <script src='socket.io/socket.io.v0.9.6.js'></script>
     <script src='fuzzytime.js'></script>
+    <script src='handlebars.runtime-1.0.0.beta.6.js'></script>
+    <script src='templates/tweet.handlebars'></script>
     <script>
       var socket = io.connect();
       var tweets_element = document.getElementById('tweets');

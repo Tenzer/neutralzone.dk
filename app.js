@@ -161,8 +161,12 @@ t.immortalStream('statuses/filter', {
 
     io.sockets.emit('tweet',
       {
-        html: renderTweet(tweet),
-        tweetId: tweet.id_str
+        id: tweet.id_str,
+        pic_url: tweet.user.profile_image_url,
+        screen_name: tweet.user.screen_name,
+        name: tweet.user.name,
+        timestamp: new Date(tweet.created_at).toJSON(),
+        text: renderTweet(tweet)
       }
     );
 
@@ -193,15 +197,29 @@ t.immortalStream('statuses/filter', {
 
 /* Rendering */
 
-var mustache = require('mustache');
-
 function renderTweet (tweet) {
-  tweet.timestamp = new Date(tweet.created_at).toJSON();
-  return mustache.to_html(
-    '@<a class="screenname" href="http://twitter.com/{{user.screen_name}}">{{user.name}}</a><br />' +
-    '<a href="http://twitter.com/{{user.screen_name}}/status/{{id_str}}"><time datetime="{{timestamp}}">Less than a minute ago</time></a><br />' +
-    '{{text}}<br />'
-  , tweet);
+  // URLs
+  var i, entity;
+  if (tweet.entities.urls && tweet.entities.urls.length > 0) {
+    for (i = 0; i < tweet.entities.urls.length; i++) {
+      entity = tweet.entities.urls[i];
+      tweet.text = tweet.text.replace(entity.url, '<a href="' +
+        entity.expanded_url + '">' + entity.display_url + '</a>'
+      );
+    }
+  }
+
+  // Media
+  if (tweet.entities.media && tweet.entities.media.length > 0) {
+    for (i = 0; i < tweet.entities.media.length; i++) {
+      entity = tweet.entities.media[i];
+      tweet.text = tweet.text.replace(entity.url, '<a href="' +
+        entity.expanded_url + '">' + entity.display_url + '</a>'
+      );
+    }
+  }
+
+  return tweet.text;
 }
 
 

@@ -4,9 +4,11 @@
   "private": true,
   "dependencies": {
     "socket.io": "0.9.6",
-    "mustache": "~0.4.0",
     "immortal-ntwitter": "git://github.com/horixon/immortal-ntwitter.git",
     "tiny": "git://github.com/chjj/node-tiny.git",
     "express": "~2.5.9"
+  },
+  "devDependencies": {
+    "handlebars": "~1.0.0"
   }
 }
