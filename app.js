@@ -174,11 +174,9 @@ t.immortalStream('statuses/filter', {
   });
 
   ts.on('delete', function deleteTweet (tweet) {
-    console.log('Delete event received, content: %s', tweet); // Debugging
+    io.sockets.emit('delete', { id: tweet.status.id_str });
 
-    io.sockets.emit('delete', { tweetId: tweet['delete'].status.id_str });
-
-    db.remove(tweet['delete'].status.id_str, function deleteTweet (err) {
+    db.remove(tweet.status.id_str, function deleteTweet (err) {
       if (err) {
         console.error('Error deleting tweet: %s', err);
       }

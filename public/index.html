@@ -70,13 +70,13 @@
 
       socket.on('tweet', function tweetReceived (data) {
         var item = document.createElement('li');
-        item.setAttribute('id', data.tweetId);
-        item.innerHTML = data.html;
+        item.setAttribute('id', data.id);
+        item.innerHTML = Handlebars.templates.tweet(data);
         tweets_element.insertBefore(item, tweets_element.firstChild);
       });
 
       socket.on('delete', function tweetDeleted (data) {
-        var tweet = document.getElementById(data.tweetId);
+        var tweet = document.getElementById(data.id);
         if (tweet) {
           tweet.parentNode.removeChild(tweet);
         }
