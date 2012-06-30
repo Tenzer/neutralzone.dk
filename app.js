@@ -87,7 +87,7 @@ app.listen(process.env['app_port'] || 3000);
 
 var io = require('socket.io').listen(app);
 io.enable('browser client minification');
-io.enable('browser client gzip');
+//io.enable('browser client gzip'); // If enabled on Node 0.8.x it will just output an empty file
 io.set('log', false);
 
 var clients = 0;
