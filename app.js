@@ -72,10 +72,9 @@ setInterval(function removeOldTweets () {
 
 var express = require('express');
 var app = express.createServer();
-var one_week = 1000 * 60 * 60 * 24 * 7;
 
 app.use(express.logger());
-app.use(express.static(__dirname + '/public', { magAge: one_week }));
+app.use(express.static(__dirname + '/public'));
 
 app.get('/', function (req, res) {
   res.sendfile(__dirname + '/public/index.html');
