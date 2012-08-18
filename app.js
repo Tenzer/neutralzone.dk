@@ -87,6 +87,8 @@ app.listen(process.env['app_port'] || 3000);
 
 var io = require('socket.io').listen(app);
 io.set('log', false);
+io.enable('browser client minification');
+io.enable('browser cilent gzip');
 
 var clients = 0;
 

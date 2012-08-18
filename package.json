@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "socket.io": "0.9.6",
+    "socket.io": "0.9.10",
     "immortal-ntwitter": "git://github.com/horixon/immortal-ntwitter.git",
     "tiny": "git://github.com/chjj/node-tiny.git",
     "express": "~2.5.9"
