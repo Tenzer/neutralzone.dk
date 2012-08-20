@@ -107,14 +107,27 @@ io.sockets.on('connection', function clientConnected (socket) {
   .desc('timestamp')
   .limit(20)(function sendOldTweets (err, tweets) {
     for (var i = tweets.length - 1; i >= 0; i--) {
+      var tweet = tweets[i].tweet;
+      var timestamp = tweets[i].timestamp;
+      var retweet;
+
+      if (tweet.retweeted_status) {
+        retweet = {
+          name: tweet.user.name,
+          screen_name: tweet.user.screen_name
+        };
+        tweet = tweet.retweeted_status;
+      }
+
       socket.emit('tweet',
         {
-          id: tweets[i].id,
-          pic_url: tweets[i].tweet.user.profile_image_url,
-          screen_name: tweets[i].tweet.user.screen_name,
-          name: tweets[i].tweet.user.name,
-          timestamp: new Date(tweets[i].timestamp).toJSON(),
-          text: renderTweet(tweets[i].tweet)
+          id: tweet.id,
+          pic_url: tweet.user.profile_image_url,
+          screen_name: tweet.user.screen_name,
+          name: tweet.user.name,
+          timestamp: new Date(timestamp).toJSON(),
+          text: renderTweet(tweet),
+          retweet: retweet
         }
       );
     }
@@ -153,14 +166,18 @@ t.immortalStream('statuses/filter', {
   follow: t_opts.follow.join(',')
 }, function twitterStream (ts) {
   ts.on('data', function processNewTweet (tweet) {
-    if (t_opts.follow.indexOf(tweet.user.id) === -1) {
-      // Ignore tweets not coming from accounts followed
+    if (tweet.in_reply_to_user_id) {
+      // Ignore replies
       return;
     }
-    if (tweet.in_reply_to_user_id &&
-        t_opts.follow.indexOf(tweet.user.id) === -1) {
-      // Ignore replies to accounts not followed
-      return;
+
+    var retweet;
+    if (tweet.retweeted_status) {
+      var retweet = {
+        user: tweet.user.name,
+        screen_name: tweet.user.screen_name
+      }
+      tweet = tweet.retweeted_status;
     }
 
     io.sockets.emit('tweet',
@@ -170,7 +187,8 @@ t.immortalStream('statuses/filter', {
         screen_name: tweet.user.screen_name,
         name: tweet.user.name,
         timestamp: new Date(tweet.created_at).toJSON(),
-        text: renderTweet(tweet)
+        text: renderTweet(tweet),
+        retweet: tweet.retweet
       }
     );
 
@@ -206,7 +224,7 @@ function renderTweet (tweet) {
     for (i = 0; i < tweet.entities.urls.length; i++) {
       entity = tweet.entities.urls[i];
       tweet.text = tweet.text.replace(entity.url, '<a href="' +
-        entity.expanded_url + '">' + entity.display_url + '</a>'
+        entity.url + '">' + entity.display_url + '</a>'
       );
     }
   }
@@ -216,8 +234,36 @@ function renderTweet (tweet) {
     for (i = 0; i < tweet.entities.media.length; i++) {
       entity = tweet.entities.media[i];
       tweet.text = tweet.text.replace(entity.url, '<a href="' +
-        entity.expanded_url + '">' + entity.display_url + '</a>'
+        entity.url + '">' + entity.display_url + '</a>'
       );
+    }
+  }
+
+  // Users
+  if (tweet.entities.user_mentions && tweet.entities.user_mentions.length > 0) {
+    for (i = 0; i < tweet.entities.user_mentions.length; i++) {
+      entity = tweet.entities.user_mentions[i];
+      tweet.text = tweet.text.substring(0, entity.indices[0]) +
+        '<a href="https://twitter.com/intent/user?screen_name=' +
+          entity.screen_name +
+        '">@' +
+        entity.screen_name +
+        '</a>' +
+        tweet.text.substring(entity.indices[1]);
+    }
+  }
+
+  // Hashtags
+  if (tweet.entities.hashtags && tweet.entities.hashtags.length > 0) {
+    for (i = 0; i < tweet.entities.hashtags.length; i++) {
+      entity = tweet.entities.hashtags[i];
+      tweet.text = tweet.text.substring(0, entity.indices[0]) +
+        '<a href="https://twitter.com/search/%23' +
+        entity.text +
+        '">#' +
+        entity.text +
+        '</a>' +
+        tweet.text.substring(entity.indices[1]);
     }
   }
 

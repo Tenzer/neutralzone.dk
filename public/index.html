@@ -19,27 +19,55 @@
         clear: both;
       }
 
+      ul#tweets {
+        padding: 0;
+      }
+
       ul#tweets li {
-        display: block;
-        margin-bottom: 10px;
-        padding-bottom: 10px;
-        width: 850px;
+        display: inline-block;
+        margin: 0 5px;
+        width: 868px;
+        padding: 10px;
+        min-height: 50px;
         clear: both;
+        border: 1px solid lightgrey;
+      }
+
+      li:hover a.username,
+      li:hover a.time,
+      li:hover span.retweet a,
+      li:hover span.actions a {
+        opacity: 1;
       }
 
       a {
         color: darkslateblue;
+        text-decoration: none;
       }
 
-      div.profile-pic {
+      a:hover {
+        text-decoration: underline;
+        color: darkslateblue !important;
+      }
+
+      /* Grey links */
+      a.username, a.time, span.retweet a, a.action {
+        color: grey;
+        font-size: 0.9em;
+        opacity: 0.5;
+        transition: opacity .25s;
+        -moz-transition: opacity .25s;
+        -webkit-transition: opacity .25s;
+      }
+
+      a.profile-pic {
         float: left;
-        width: 50px;
+        margin: 3px 10px;
       }
 
       div.tweet {
         float: right;
         width: 790px;
-        min-height: 90px;
       }
 
       span.name {
@@ -47,31 +75,43 @@
       }
 
       a.real-name {
+        float: left;
         font-weight: 700;
       }
 
       a.username {
-        font-size: 0.9em;
+        float: left;
         margin-left: 10px;
-        color: grey;
-        text-decoration: none;
       }
 
-      span.time {
+      a.time {
         float: right;
         font-style: italic;
-        font-size: 0.9em;
-      }
-
-      span.time a {
-        text-decoration: none;
-        color: grey;
       }
 
       span.text {
         float: left;
         clear: both;
-        margin-top: 5px;
+        margin: 5px 0;
+      }
+
+      span.retweet {
+        float: left;
+        clear: both;
+        color: lightgrey;
+        font-size: 0.9em;
+        margin-bottom: 5px;
+      }
+
+      span.retweet a {
+        font-size: 1em;
+      }
+
+      span.actions {
+        float: left;
+        clear: both;
+        color: lightgrey;
+        font-size: 0.9em;
       }
     </style>
   </head>
@@ -92,6 +132,7 @@
     <script src='//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0.beta6/handlebars.min.js'></script>
     <script src='templates/tweet.handlebars'></script>
     <script src='fuzzytime.js'></script>
+    <script src='//platform.twitter.com/widgets.js'></script>
     <script>
       var socket = io.connect();
       var tweets_element = document.getElementById('tweets');
