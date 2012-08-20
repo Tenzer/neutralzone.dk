@@ -9,7 +9,9 @@
         font-family: sans-serif;
       }
 
-      header, ul#tweets, footer {
+      header,
+      ul#tweets,
+      footer {
         margin: 0 auto;
         width: 900px;
       }
@@ -31,6 +33,7 @@
         min-height: 50px;
         clear: both;
         border: 1px solid lightgrey;
+        border-radius: 3px;
       }
 
       li:hover a.username,
@@ -50,14 +53,14 @@
         color: darkslateblue !important;
       }
 
-      /* Grey links */
-      a.username, a.time, span.retweet a, a.action {
+      a.username,
+      a.time,
+      span.retweet a,
+      a.action {
         color: grey;
         font-size: 0.9em;
         opacity: 0.5;
         transition: opacity .25s;
-        -moz-transition: opacity .25s;
-        -webkit-transition: opacity .25s;
       }
 
       a.profile-pic {
@@ -130,6 +133,7 @@
     <script src='//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.10/socket.io.min.js'></script>
     <!--<script src='socket.io/socket.io.v0.9.10.js'></script>-->
     <script src='//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0.beta6/handlebars.min.js'></script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.6/prefixfree.min.js'></script>
     <script src='templates/tweet.handlebars'></script>
     <script src='fuzzytime.js'></script>
     <script src='//platform.twitter.com/widgets.js'></script>
