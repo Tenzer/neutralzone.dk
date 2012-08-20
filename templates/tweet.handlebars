@@ -1,6 +1,14 @@
-<a class="profile-pic" href="http://twitter.com/{{screen_name}}">
-  <img src="{{pic_url}}" width="48px" height="48px" />
-</a>
-<a class="username" href="http://twitter.com/{{screen_name}}">{{name}}</a><br />
-<a class="timestamp" href="http://twitter.com/{{screen_name}}/status/{{id}}"><time datetime="{{timestamp}}">Less than a minute ago</time></a><br />
-{{{text}}}
+<div class="profile-pic">
+	<a href="http://twitter.com/{{screen_name}}">
+		<img src="{{pic_url}}" width="48px" height="48px" />
+	</a>
+</div>
+<div class="tweet">
+  <span class="name">
+    <a class="real-name" href="http://twitter.com/{{screen_name}}">{{name}}</a> <a class="username" href="http://twitter.com/{{screen_name}}">@{{screen_name}}</a>
+  </span>
+  <span class="time">
+    <a href="http://twitter.com/{{screen_name}}/status/{{id}}"><time datetime="{{timestamp}}">Less than a minute ago</time></a>
+  </span>
+  <span class="text">{{{text}}}</span>
+</div>

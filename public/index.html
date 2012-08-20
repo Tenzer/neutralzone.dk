@@ -16,6 +16,7 @@
 
       footer {
         text-align: center;
+        clear: both;
       }
 
       ul#tweets li {
@@ -23,29 +24,60 @@
         margin-bottom: 10px;
         padding-bottom: 10px;
         width: 850px;
+        clear: both;
       }
 
       a {
         color: darkslateblue;
       }
 
-      a.profile-pic {
+      div.profile-pic {
         float: left;
-        margin: 5px 10px 10px 0;
+        width: 50px;
       }
 
-      a.username {
+      div.tweet {
+        float: right;
+        width: 790px;
+        min-height: 90px;
+      }
+
+      span.name {
+        float: left;
+      }
+
+      a.real-name {
         font-weight: 700;
       }
 
-      a.timestamp {
+      a.username {
+        font-size: 0.9em;
+        margin-left: 10px;
+        color: grey;
+        text-decoration: none;
+      }
+
+      span.time {
+        float: right;
         font-style: italic;
+        font-size: 0.9em;
+      }
+
+      span.time a {
+        text-decoration: none;
+        color: grey;
+      }
+
+      span.text {
+        float: left;
+        clear: both;
+        margin-top: 5px;
       }
     </style>
   </head>
   <body>
     <header>
-      <img src='images/banner.png' width='900px' height='250px' alt='Neutral Zone - Live tweets from Danish American football teams' />
+      <img src='images/banner.png' width='900' height='250' alt='Neutral Zone - Live tweets from Danish American football teams' />
     </header>
 
     <ul id='tweets'></ul>
