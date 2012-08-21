@@ -121,7 +121,7 @@ io.sockets.on('connection', function clientConnected (socket) {
 
       socket.emit('tweet',
         {
-          id: tweet.id,
+          id: tweet.id_str,
           pic_url: tweet.user.profile_image_url,
           screen_name: tweet.user.screen_name,
           name: tweet.user.name,

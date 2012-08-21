@@ -58,10 +58,10 @@ function program1(depth0,data) {
   if(typeof stack1 === functionType) { stack1 = stack1.call(depth0, { hash: {} }); }
   else if(stack1=== undef) { stack1 = helperMissing.call(depth0, "screen_name", { hash: {} }); }
   buffer += escapeExpression(stack1) + "/status/";
-  foundHelper = helpers.id_str;
-  stack1 = foundHelper || depth0.id_str;
+  foundHelper = helpers.id;
+  stack1 = foundHelper || depth0.id;
   if(typeof stack1 === functionType) { stack1 = stack1.call(depth0, { hash: {} }); }
-  else if(stack1=== undef) { stack1 = helperMissing.call(depth0, "id_str", { hash: {} }); }
+  else if(stack1=== undef) { stack1 = helperMissing.call(depth0, "id", { hash: {} }); }
   buffer += escapeExpression(stack1) + "\"><time datetime=\"";
   foundHelper = helpers.timestamp;
   stack1 = foundHelper || depth0.timestamp;
@@ -84,20 +84,20 @@ function program1(depth0,data) {
   stack1 = stack2.call(depth0, stack1, tmp1);
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n  <span class=\"actions\">\n    <a class=\"action\" href=\"https://twitter.com/intent/tweet?in_reply_to=";
-  foundHelper = helpers.id_str;
-  stack1 = foundHelper || depth0.id_str;
+  foundHelper = helpers.id;
+  stack1 = foundHelper || depth0.id;
   if(typeof stack1 === functionType) { stack1 = stack1.call(depth0, { hash: {} }); }
-  else if(stack1=== undef) { stack1 = helperMissing.call(depth0, "id_str", { hash: {} }); }
+  else if(stack1=== undef) { stack1 = helperMissing.call(depth0, "id", { hash: {} }); }
   buffer += escapeExpression(stack1) + "\">Reply</a> -\n    <a class=\"action\" href=\"https://twitter.com/intent/retweet?tweet_id=";
-  foundHelper = helpers.id_str;
-  stack1 = foundHelper || depth0.id_str;
+  foundHelper = helpers.id;
+  stack1 = foundHelper || depth0.id;
   if(typeof stack1 === functionType) { stack1 = stack1.call(depth0, { hash: {} }); }
-  else if(stack1=== undef) { stack1 = helperMissing.call(depth0, "id_str", { hash: {} }); }
+  else if(stack1=== undef) { stack1 = helperMissing.call(depth0, "id", { hash: {} }); }
   buffer += escapeExpression(stack1) + "\">Retweet</a> -\n    <a class=\"action\" href=\"https://twitter.com/intent/favorite?tweet_id=";
-  foundHelper = helpers.id_str;
-  stack1 = foundHelper || depth0.id_str;
+  foundHelper = helpers.id;
+  stack1 = foundHelper || depth0.id;
   if(typeof stack1 === functionType) { stack1 = stack1.call(depth0, { hash: {} }); }
-  else if(stack1=== undef) { stack1 = helperMissing.call(depth0, "id_str", { hash: {} }); }
+  else if(stack1=== undef) { stack1 = helperMissing.call(depth0, "id", { hash: {} }); }
   buffer += escapeExpression(stack1) + "\">Favorite</a>\n  </span>\n</div>\n";
   return buffer;});
 })();
