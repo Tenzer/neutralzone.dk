@@ -173,10 +173,10 @@ t.immortalStream('statuses/filter', {
 
     var retweet = undefined;
     if (tweet.retweeted_status) {
-      var retweet = {
+      retweet = {
         user: tweet.user.name,
         screen_name: tweet.user.screen_name
-      }
+      };
       tweet = tweet.retweeted_status;
     }
 
@@ -245,7 +245,7 @@ function renderTweet (tweet) {
       entity = tweet.entities.user_mentions[i];
       tweet.text = tweet.text.substring(0, entity.indices[0]) +
         '<a href="https://twitter.com/intent/user?screen_name=' +
-          entity.screen_name +
+        entity.screen_name +
         '">@' +
         entity.screen_name +
         '</a>' +
