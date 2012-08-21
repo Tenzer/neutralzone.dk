@@ -109,7 +109,7 @@ io.sockets.on('connection', function clientConnected (socket) {
     for (var i = tweets.length - 1; i >= 0; i--) {
       var tweet = tweets[i].tweet;
       var timestamp = tweets[i].timestamp;
-      var retweet;
+      var retweet = undefined;
 
       if (tweet.retweeted_status) {
         retweet = {
@@ -171,7 +171,7 @@ t.immortalStream('statuses/filter', {
       return;
     }
 
-    var retweet;
+    var retweet = undefined;
     if (tweet.retweeted_status) {
       var retweet = {
         user: tweet.user.name,
