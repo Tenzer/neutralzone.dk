@@ -243,13 +243,10 @@ function renderTweet (tweet) {
   if (tweet.entities.user_mentions && tweet.entities.user_mentions.length > 0) {
     for (i = 0; i < tweet.entities.user_mentions.length; i++) {
       entity = tweet.entities.user_mentions[i];
-      tweet.text = tweet.text.substring(0, entity.indices[0]) +
+      tweet.text = tweet.text.replace('@' + entity.screen_name,
         '<a href="https://twitter.com/intent/user?screen_name=' +
-        entity.screen_name +
-        '">@' +
-        entity.screen_name +
-        '</a>' +
-        tweet.text.substring(entity.indices[1]);
+        entity.screen_name + '">@' + entity.screen_name + '</a>'
+      );
     }
   }
 
@@ -257,13 +254,10 @@ function renderTweet (tweet) {
   if (tweet.entities.hashtags && tweet.entities.hashtags.length > 0) {
     for (i = 0; i < tweet.entities.hashtags.length; i++) {
       entity = tweet.entities.hashtags[i];
-      tweet.text = tweet.text.substring(0, entity.indices[0]) +
-        '<a href="https://twitter.com/search/%23' +
-        entity.text +
-        '">#' +
-        entity.text +
-        '</a>' +
-        tweet.text.substring(entity.indices[1]);
+      tweet.text = tweet.text.replace('#' + entity.text,
+        '<a href="https://twitter.com/search/%23' + entity.text + '">#' +
+        entity.text + '</a>'
+      );
     }
   }
 
