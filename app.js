@@ -218,10 +218,8 @@ t.immortalStream('statuses/filter', {
 /* Rendering */
 
 function renderTweet (tweet) {
+  // URLs
   var i, entity;
-
-  // URLs - Twitter apparently makes these links on its own
-/*
   if (tweet.entities.urls && tweet.entities.urls.length > 0) {
     for (i = 0; i < tweet.entities.urls.length; i++) {
       entity = tweet.entities.urls[i];
@@ -230,7 +228,6 @@ function renderTweet (tweet) {
       );
     }
   }
-*/
 
   // Media
   if (tweet.entities.media && tweet.entities.media.length > 0) {
@@ -242,8 +239,7 @@ function renderTweet (tweet) {
     }
   }
 
-  // Users - Twitter apparently makes these links on its own
-/*
+  // Users
   if (tweet.entities.user_mentions && tweet.entities.user_mentions.length > 0) {
     for (i = 0; i < tweet.entities.user_mentions.length; i++) {
       entity = tweet.entities.user_mentions[i];
@@ -253,7 +249,6 @@ function renderTweet (tweet) {
       );
     }
   }
-*/
 
   // Hashtags
   if (tweet.entities.hashtags && tweet.entities.hashtags.length > 0) {
