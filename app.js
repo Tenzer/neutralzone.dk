@@ -146,7 +146,7 @@ io.sockets.on('connection', function clientConnected (socket) {
 
 /* Twitter */
 
-/*try {
+try {
   var t_opts = require(__dirname + '/twitter_options.json');
 } catch (e) {
   console.error('Error reading twitter_options.json: %s\nQuitting!', e.message);
@@ -212,7 +212,7 @@ t.immortalStream('statuses/filter', {
   ts.on('scrub_geo', function scrubGeoReceived (data) {
     console.log('Scrub Geo event received, content: %s', data);
   });
-});*/
+});
 
 
 /* Rendering */
