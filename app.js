@@ -218,6 +218,12 @@ t.immortalStream('statuses/filter', {
 /* Rendering */
 
 function renderTweet (tweet) {
+  // Find out if tweet already has links
+  if (tweet.text.indexOf('</a>') !== -1) {
+    // It has, so don't create our own links
+    return tweet;
+  }
+
   // URLs
   var i, entity;
   if (tweet.entities.urls && tweet.entities.urls.length > 0) {
