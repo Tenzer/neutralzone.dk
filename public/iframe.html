@@ -19,13 +19,13 @@
         clear: both;
       }
 
-      ul#tweets {
+      .tweets {
         padding: 0;
         margin: 0;
         width: 100%;
       }
 
-      ul#tweets li {
+      .tweets li {
         display: inline-block;
         width: calc(100% - 10px);
         padding: 5px;
@@ -33,10 +33,10 @@
         border-radius: 3px;
       }
 
-      li:hover a.username,
-      li:hover a.time,
-      li:hover span.retweet a,
-      li:hover span.actions a {
+      li:hover .username,
+      li:hover .time,
+      li:hover .retweet a,
+      li:hover .actions a {
         opacity: 1;
       }
 
@@ -47,51 +47,51 @@
 
       a:hover {
         text-decoration: underline;
-        color: darkslateblue !important;
+        color: darkslateblue;
       }
 
-      a.username,
-      a.time,
-      span.retweet a,
-      a.action {
+      .username,
+      .time,
+      .retweet a,
+      .action {
         color: grey;
         font-size: 0.9em;
         opacity: 0.5;
         transition: opacity .25s;
       }
 
-      a.profile-pic {
+      .profile-pic {
         float: left;
         margin-right: 5px;
       }
 
-      div.tweet {
+      .tweet {
         float: right;
         width: calc(100% - 53px); /* Profile pic = 48px plus 5px margin */
       }
 
-      a.real-name {
+      .real-name {
         float: left;
         font-weight: 700;
       }
 
-      a.username {
+      .username {
         float: left;
         margin-left: 10px;
       }
 
-      a.time {
+      .time {
         float: right;
         font-style: italic;
       }
 
-      span.text {
+      .text {
         float: left;
         clear: both;
         margin: 5px 0;
       }
 
-      span.retweet {
+      .retweet {
         float: left;
         clear: both;
         color: lightgrey;
@@ -99,11 +99,11 @@
         margin-bottom: 5px;
       }
 
-      span.retweet a {
+      .retweet a {
         font-size: 1em;
       }
 
-      span.actions {
+      .actions {
         float: left;
         clear: both;
         color: lightgrey;
@@ -118,7 +118,7 @@
       </header>
     -->
 
-    <ul id='tweets'></ul>
+    <ul id='tweets' class='tweets'></ul>
 
     <footer>
       <!--<p id='credits'>This page is made by <a href='http://tenzer.dk/'>Jeppe Toustrup</a> and <a href='http://teige.dk/'>Nicklas Teige</a>.</p>-->
