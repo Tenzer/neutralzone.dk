@@ -1,7 +1,3 @@
-Server side:
-- Make links pretty, and add links to referenced Twitter handles
-- Filter out tweets that only were created by the users specified on the list in twitter_options.json
-
 Client side:
-- Design!
 - Automatic generation of followers list
+- Favicon
