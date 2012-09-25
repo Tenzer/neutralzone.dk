@@ -133,7 +133,7 @@
     <script src='fuzzytime.js'></script>
     <script src='//platform.twitter.com/widgets.js'></script>
     <script>
-      var socket = io.connect();
+      var socket = io.connect('http://neutralzone.dk:843/');
       var tweets_element = document.getElementById('tweets');
 
       socket.on('users', function usersUpdate (data) {
