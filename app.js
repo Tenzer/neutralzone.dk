@@ -71,7 +71,6 @@ setInterval(function removeOldTweets () {
 /* Socket.IO */
 
 var io = require('socket.io').listen(3000);
-io.set('log', false);
 
 var clients = 0;
 
