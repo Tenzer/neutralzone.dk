@@ -5,8 +5,7 @@
   "dependencies": {
     "socket.io": "0.9.10",
     "immortal-ntwitter": "git://github.com/horixon/immortal-ntwitter.git",
-    "tiny": "git://github.com/chjj/node-tiny.git",
-    "express": "~2.5.9"
+    "tiny": "git://github.com/chjj/node-tiny.git"
   },
   "devDependencies": {
     "handlebars": "~1.0.0"
