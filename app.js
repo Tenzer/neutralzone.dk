@@ -145,9 +145,15 @@ t.verifyCredentials(function testCredentials (err, data) {
   }
 });
 
-t.immortalStream('statuses/filter', {
-  follow: t_opts.follow.join(',')
-}, function twitterStream (ts) {
+var filter = {};
+if (t_opts.follow) {
+  filter.follow = t_opts.follow.join(',');
+}
+if (t_opts.track) {
+  filter.track = t_opts.track.join(',');
+}
+
+t.immortalStream('statuses/filter', filter, function twitterStream (ts) {
   ts.on('data', function processNewTweet (tweet) {
     if (tweet.in_reply_to_user_id) {
       // Ignore replies
