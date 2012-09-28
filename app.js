@@ -189,7 +189,8 @@ t.immortalStream('statuses/filter', filter, function twitterStream (ts) {
 
     db.remove(tweet.status.id_str, function deleteTweet (err) {
       if (err) {
-        console.error('Error deleting tweet: %s', err);
+        console.error('Error deleting tweet (ID %s): %s',
+          tweet.status.id_str, err);
       }
     });
   });
