@@ -160,6 +160,7 @@ t.immortalStream('statuses/filter', filter, function twitterStream (ts) {
       return;
     }
 
+    var original_tweet = tweet;
     var retweet = undefined;
     if (tweet.retweeted_status) {
       retweet = {
@@ -181,7 +182,7 @@ t.immortalStream('statuses/filter', filter, function twitterStream (ts) {
       }
     );
 
-    storeTweet(tweet);
+    storeTweet(original_tweet);
   });
 
   ts.on('delete', function deleteTweet (tweet) {
