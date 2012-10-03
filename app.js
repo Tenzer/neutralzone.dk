@@ -68,27 +68,10 @@ setInterval(function removeOldTweets () {
 }, 21600000); // Every six hours
 
 
-/* Express */
-
-var express = require('express');
-var app = express.createServer();
-
-app.use(express.logger());
-app.use(express.static(__dirname + '/public'));
-
-app.get('/', function (req, res) {
-  res.sendfile(__dirname + '/public/index.html');
-});
-
-app.listen(process.env['app_port'] || 3000);
-
-
 /* Socket.IO */
 
-var io = require('socket.io').listen(app);
-io.set('log', false);
-io.enable('browser client minification');
-io.enable('browser cilent gzip');
+var io = require('socket.io').listen(3000);
+io.set('log level', 2);
 
 var clients = 0;
 
@@ -162,15 +145,22 @@ t.verifyCredentials(function testCredentials (err, data) {
   }
 });
 
-t.immortalStream('statuses/filter', {
-  follow: t_opts.follow.join(',')
-}, function twitterStream (ts) {
+var filter = {};
+if (t_opts.follow) {
+  filter.follow = t_opts.follow.join(',');
+}
+if (t_opts.track) {
+  filter.track = t_opts.track.join(',');
+}
+
+t.immortalStream('statuses/filter', filter, function twitterStream (ts) {
   ts.on('data', function processNewTweet (tweet) {
     if (tweet.in_reply_to_user_id) {
       // Ignore replies
       return;
     }
 
+    var original_tweet = tweet;
     var retweet = undefined;
     if (tweet.retweeted_status) {
       retweet = {
@@ -192,7 +182,7 @@ t.immortalStream('statuses/filter', {
       }
     );
 
-    storeTweet(tweet);
+    storeTweet(original_tweet);
   });
 
   ts.on('delete', function deleteTweet (tweet) {
@@ -200,7 +190,8 @@ t.immortalStream('statuses/filter', {
 
     db.remove(tweet.status.id_str, function deleteTweet (err) {
       if (err) {
-        console.error('Error deleting tweet: %s', err);
+        console.error('Error deleting tweet (ID %s): %s',
+          tweet.status.id_str, err);
       }
     });
   });

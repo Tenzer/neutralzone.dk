@@ -133,7 +133,7 @@
     <script src='fuzzytime.js'></script>
     <script src='//platform.twitter.com/widgets.js'></script>
     <script>
-      var socket = io.connect();
+      var socket = io.connect('http://neutralzone.dk:843/');
       var tweets_element = document.getElementById('tweets');
 
       socket.on('users', function usersUpdate (data) {
@@ -163,6 +163,17 @@
       socket.on('time', function timeReceived (data) {
         goFuzzy(data.now);
       });
+    </script>
+    <script>
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-35123393-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
     </script>
   </body>
 </html>
