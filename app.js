@@ -89,10 +89,12 @@ io.sockets.on('connection', function clientConnected (socket) {
   })
   .desc('timestamp')
   .limit(20)(function sendOldTweets (err, tweets) {
+    var retweet;
+
     for (var i = tweets.length - 1; i >= 0; i--) {
       var tweet = tweets[i].tweet;
       var timestamp = tweets[i].timestamp;
-      var retweet = undefined;
+      retweet = undefined;
 
       if (tweet.retweeted_status) {
         retweet = {
@@ -161,7 +163,7 @@ t.immortalStream('statuses/filter', filter, function twitterStream (ts) {
     }
 
     var original_tweet = tweet;
-    var retweet = undefined;
+    var retweet;
     if (tweet.retweeted_status) {
       retweet = {
         user: tweet.user.name,
