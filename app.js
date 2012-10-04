@@ -104,17 +104,22 @@ io.sockets.on('connection', function clientConnected (socket) {
         tweet = tweet.retweeted_status;
       }
 
-      socket.emit('tweet',
-        {
-          id: tweet.id_str,
-          pic_url: tweet.user.profile_image_url,
-          screen_name: tweet.user.screen_name,
-          name: tweet.user.name,
-          timestamp: new Date(timestamp).toJSON(),
-          text: renderTweet(tweet),
-          retweet: retweet
-        }
-      );
+      var t = {
+        id: tweet.id_str,
+        screen_name: tweet.user.screen_name,
+        name: tweet.user.name,
+        timestamp: new Date(timestamp).toJSON(),
+        text: renderTweet(tweet),
+        retweet: retweet
+      };
+
+      if (tweet.user.profile_image_url) {
+        t.pic_url = tweet.user.profile_image_url;
+      } else {
+        t.pic_url = 'images/no-picture.png';
+      }
+
+      socket.emit('tweet', t);
     }
 
     // Sends out the server time to the new client, this calls goFuzzy()
@@ -172,17 +177,22 @@ t.immortalStream('statuses/filter', filter, function twitterStream (ts) {
       tweet = tweet.retweeted_status;
     }
 
-    io.sockets.emit('tweet',
-      {
-        id: tweet.id_str,
-        pic_url: tweet.user.profile_image_url,
-        screen_name: tweet.user.screen_name,
-        name: tweet.user.name,
-        timestamp: new Date(tweet.created_at).toJSON(),
-        text: renderTweet(tweet),
-        retweet: tweet.retweet
-      }
-    );
+    var t = {
+      id: tweet.id_str,
+      screen_name: tweet.user.screen_name,
+      name: tweet.user.name,
+      timestamp: new Date(tweet.created_at).toJSON(),
+      text: renderTweet(tweet),
+      retweet: retweet
+    };
+
+    if (tweet.user.profile_image_url) {
+      t.pic_url = tweet.user.profile_image_url;
+    } else {
+      t.pic_url = 'images/no-picture.png';
+    }
+
+    io.sockets.emit('tweet', t);
 
     storeTweet(original_tweet);
   });
