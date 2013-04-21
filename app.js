@@ -226,6 +226,9 @@ t.immortalStream('statuses/filter', filter, function twitterStream (ts) {
 /* Rendering */
 
 function renderTweet (tweet) {
+  // Replace newline characters with <br>
+  tweet.text = tweet.text.replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1<br>$2');
+
   // Find out if tweet already has links
   if (tweet.text.indexOf('</a>') !== -1) {
     // It has, so don't create our own links
