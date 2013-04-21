@@ -37,7 +37,8 @@
       .tweets li {
         display: inline-block;
         width: 100%;
-        clear: both;
+        position: relative;
+        margin: 5px 0;
         border: 1px solid lightgrey;
         border-radius: 3px;
       }
@@ -70,26 +71,20 @@
       }
 
       .profile-pic {
-        float: left;
-        margin: 10px;
+        position: absolute;
+        top: 10px;
+        left: 10px;
       }
 
       .tweet {
-        float: left;
-        margin: 10px;
-      }
-
-      .name {
-        float: left;
+        margin: 10px 10px 10px 70px;
       }
 
       .real-name {
-        float: left;
         font-weight: 700;
       }
 
       .username {
-        float: left;
         margin-left: 10px;
       }
 
@@ -100,14 +95,10 @@
       }
 
       .text {
-        float: left;
-        clear: both;
         margin: 5px 0;
       }
 
       .retweet {
-        float: left;
-        clear: both;
         color: lightgrey;
         font-size: 0.9em;
         margin-bottom: 5px;
@@ -118,8 +109,6 @@
       }
 
       .actions {
-        float: left;
-        clear: both;
         color: lightgrey;
         font-size: 0.9em;
       }
