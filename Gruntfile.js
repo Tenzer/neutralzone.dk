@@ -10,7 +10,11 @@ module.exports = function (grunt) {
 		},
 		handlebars: {
 			options: {
-				namespace: false
+				namespace: 'Handlebars.templates',
+				processName: function (filename) {
+					var pieces = filename.split('/');
+					return pieces[pieces.length - 1].replace(/\.handlebars$/, '');
+				}
 			},
 			compile: {
 				files: {
