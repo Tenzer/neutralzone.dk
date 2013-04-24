@@ -1,3 +1,5 @@
+dist/
 node_modules/
+public/js/tweet.handlebars.js
 latest_tweets.tiny
 twitter_options.json

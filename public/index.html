@@ -1,180 +1,69 @@
 <!DOCTYPE html>
 <html lang='en'>
-  <head>
-    <meta charset='utf-8' />
-    <title>Neutral Zone</title>
-    <style type='text/css'>
-      body {
-        background-color: white;
-        font-family: sans-serif;
-      }
+	<head>
+		<title>Neutral Zone</title>
+		<link rel='stylesheet' href='style.css' />
+	</head>
+	<body>
+		<header>
+			<img src='images/header.png' width='890' height='250' alt='Neutral Zone - Live tweets from Danish American football teams' />
+		</header>
 
-      a img {
-        border: 0;
-      }
+		<ul id='tweets' class='tweets'></ul>
 
-      header,
-      .tweets,
-      footer {
-        margin: 0 auto;
-        max-width: 890px;
-      }
+		<footer>
+			<p id='credits'>This page is made by <a href='http://tenzer.dk/'>Jeppe Toustrup</a>. Banner by <a href='http://teige.dk/'>Nicklas Teige</a>.</p>
+			<p id='status'>No connection to server.</p>
+		</footer>
 
-      header img {
-        max-width: 100%;
-        height: auto;
-      }
+		<script src='js/socket.io.js'></script>
+		<script src='js/handlebars.runtime.js'></script>
+		<script src='js/prefixfree.js'></script>
+		<script src='js/fuzzytime.js'></script>
+		<script src='js/tweet.handlebars.js'></script>
+		<script src='//platform.twitter.com/widgets.js' async='async'></script>
+		<script>
+			var socket = io.connect();
+			var tweets_element = document.getElementById('tweets');
 
-      footer {
-        text-align: center;
-        clear: both;
-      }
+			socket.on('users', function usersUpdate (data) {
+				document.getElementById('status').innerHTML = 'Connected to server. ' +
+					'Current users: ' + data.count + '.';
+			});
 
-      .tweets {
-        padding: 0;
-      }
+			socket.on('tweet', function tweetReceived (data) {
+				var item = document.createElement('li');
+				item.setAttribute('id', 'tweet-' + data.id);
+				item.innerHTML = Handlebars.templates.tweet(data);
+				tweets_element.insertBefore(item, tweets_element.firstChild);
+			});
 
-      .tweets li {
-        display: inline-block;
-        width: 100%;
-        position: relative;
-        margin: 5px 0;
-        border: 1px solid lightgrey;
-        border-radius: 3px;
-      }
+			socket.on('delete', function tweetDeleted (data) {
+				var tweet = document.getElementById('tweet-' + data.id);
+				if (tweet) {
+					tweet.parentNode.removeChild(tweet);
+				}
+			});
 
-      li:hover .username,
-      li:hover .time,
-      li:hover .retweet a,
-      li:hover .actions a {
-        opacity: 1;
-      }
+			socket.on('error', function errorDetected (error) {
+				document.getElementById('status').innerHTML = 'Lost connection to server.';
+				console.log(error);
+			});
 
-      a {
-        color: navy;
-        text-decoration: none;
-      }
+			socket.on('time', function timeReceived (data) {
+				goFuzzy(data.now);
+			});
+		</script>
+		<script>
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-35123393-1']);
+			_gaq.push(['_trackPageview']);
 
-      a:hover {
-        text-decoration: underline;
-        color: darkslateblue;
-      }
-
-      .username,
-      .time,
-      .retweet a,
-      .action {
-        color: grey;
-        font-size: 0.9em;
-        opacity: 0.5;
-        transition: opacity .25s;
-      }
-
-      .profile-pic {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-      }
-
-      .tweet {
-        margin: 10px 10px 10px 70px;
-      }
-
-      .real-name {
-        font-weight: 700;
-      }
-
-      .username {
-        margin-left: 10px;
-      }
-
-      .time {
-        float: right;
-        margin: 10px;
-        font-style: italic;
-      }
-
-      .text {
-        margin: 5px 0;
-        line-height: 1.3;
-      }
-
-      .retweet {
-        color: lightgrey;
-        font-size: 0.9em;
-        margin-bottom: 5px;
-      }
-
-      .retweet a {
-        font-size: 1em;
-      }
-
-      .actions {
-        color: lightgrey;
-        font-size: 0.9em;
-      }
-    </style>
-  </head>
-  <body>
-    <header>
-      <img src='images/header.png' width='890' height='250' alt='Neutral Zone - Live tweets from Danish American football teams' />
-    </header>
-
-    <ul id='tweets' class='tweets'></ul>
-
-    <footer>
-      <p id='credits'>This page is made by <a href='http://tenzer.dk/'>Jeppe Toustrup</a>. Banner by <a href='http://teige.dk/'>Nicklas Teige</a>.</p>
-      <p id='status'>No connection to server.</p>
-    </footer>
-
-    <script src='socket.io/socket.io.v0.9.11.js'></script>
-    <script src='//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0-rc.3/handlebars.min.js'></script>
-    <script src='//cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js'></script>
-    <script src='templates/tweet.handlebars'></script>
-    <script src='fuzzytime.js'></script>
-    <script src='//platform.twitter.com/widgets.js'></script>
-    <script>
-      var socket = io.connect();
-      var tweets_element = document.getElementById('tweets');
-
-      socket.on('users', function usersUpdate (data) {
-        document.getElementById('status').innerHTML = 'Connected to server. ' +
-          'Current users: ' + data.count + '.';
-      });
-
-      socket.on('tweet', function tweetReceived (data) {
-        var item = document.createElement('li');
-        item.setAttribute('id', 'tweet-' + data.id);
-        item.innerHTML = Handlebars.templates.tweet(data);
-        tweets_element.insertBefore(item, tweets_element.firstChild);
-      });
-
-      socket.on('delete', function tweetDeleted (data) {
-        var tweet = document.getElementById('tweet-' + data.id);
-        if (tweet) {
-          tweet.parentNode.removeChild(tweet);
-        }
-      });
-
-      socket.on('error', function errorDetected (error) {
-        document.getElementById('status').innerHTML = 'Lost connection to server.';
-        console.log(error);
-      });
-
-      socket.on('time', function timeReceived (data) {
-        goFuzzy(data.now);
-      });
-    </script>
-    <script>
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-35123393-1']);
-      _gaq.push(['_trackPageview']);
-
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-    </script>
-  </body>
+			(function() {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+	</body>
 </html>

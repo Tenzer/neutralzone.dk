@@ -1,0 +1,109 @@
+body {
+	background-color: white;
+	font-family: sans-serif;
+}
+
+a img {
+	border: 0;
+}
+
+header,
+.tweets,
+footer {
+	margin: 0 auto;
+	max-width: 890px;
+}
+
+header img {
+	max-width: 100%;
+	height: auto;
+}
+
+footer {
+	text-align: center;
+	clear: both;
+}
+
+.tweets {
+	padding: 0;
+}
+
+.tweets li {
+	display: inline-block;
+	width: 100%;
+	position: relative;
+	margin: 5px 0;
+	border: 1px solid lightgrey;
+	border-radius: 3px;
+}
+
+li:hover .username,
+li:hover .time,
+li:hover .retweet a,
+li:hover .actions a {
+	opacity: 1;
+}
+
+a {
+	color: navy;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+	color: darkslateblue;
+}
+
+.username,
+.time,
+.retweet a,
+.action {
+	color: grey;
+	font-size: 0.9em;
+	opacity: 0.5;
+	transition: opacity .25s;
+}
+
+.profile-pic {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+}
+
+.tweet {
+	margin: 10px 10px 10px 70px;
+}
+
+.real-name {
+	font-weight: 700;
+}
+
+.username {
+	margin-left: 10px;
+}
+
+.time {
+	float: right;
+	margin: 10px;
+	font-style: italic;
+}
+
+.text {
+	margin: 5px 0;
+	line-height: 1.3;
+}
+
+.retweet {
+	color: lightgrey;
+	font-size: 0.9em;
+	margin-bottom: 5px;
+}
+
+.retweet a {
+	font-size: 1em;
+}
+
+.actions {
+	color: lightgrey;
+	font-size: 0.9em;
+}
