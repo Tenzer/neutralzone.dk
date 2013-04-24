@@ -5,8 +5,7 @@ module.exports = function (grunt) {
 		reduce: {
 			root: 'public',
 			outRoot: 'dist',
-			less: false,
-			asyncScripts: false
+			less: false
 		},
 		handlebars: {
 			options: {
