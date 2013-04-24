@@ -127,15 +127,14 @@
       <p id='status'>No connection to server.</p>
     </footer>
 
-    <!--<script src='//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.10/socket.io.min.js'></script>-->
-    <script src='//neutralzone.dk:843/socket.io/socket.io.v0.9.11.js'></script>
+    <script src='socket.io/socket.io.v0.9.11.js'></script>
     <script src='//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0-rc.3/handlebars.min.js'></script>
     <script src='//cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js'></script>
     <script src='templates/tweet.handlebars'></script>
     <script src='fuzzytime.js'></script>
     <script src='//platform.twitter.com/widgets.js'></script>
     <script>
-      var socket = io.connect('http://neutralzone.dk:843/');
+      var socket = io.connect();
       var tweets_element = document.getElementById('tweets');
 
       socket.on('users', function usersUpdate (data) {
