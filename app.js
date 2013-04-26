@@ -167,6 +167,11 @@ t.immortalStream('statuses/filter', filter, function twitterStream (ts) {
       return;
     }
 
+    if (!tweet.user) {
+      console.log('This tweet does not have a user object: ' + JSON.stringify(tweet));
+      return;
+    }
+
     var original_tweet = tweet;
     var retweet;
     if (tweet.retweeted_status) {
@@ -177,8 +182,8 @@ t.immortalStream('statuses/filter', filter, function twitterStream (ts) {
       tweet = tweet.retweeted_status;
     }
 
-    if (!tweet.user.hasOwnProperty('screen_name')) {
-      console.log('This tweet does not have a screen_name: ' + JSON.stringify(tweet, null, 2));
+    if (!tweet.user) {
+      console.log('This retweet does not have a user object: ' + JSON.stringify(tweet));
       return;
     }
 
