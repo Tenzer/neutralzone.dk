@@ -177,7 +177,7 @@ t.immortalStream('statuses/filter', filter, function twitterStream (ts) {
       tweet = tweet.retweeted_status;
     }
 
-    if (!tweet.user.screen_name) {
+    if (!tweet.user.hasOwnProperty('screen_name')) {
       console.log('This tweet does not have a screen_name: ' + JSON.stringify(tweet, null, 2));
       return;
     }
