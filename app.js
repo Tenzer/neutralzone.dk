@@ -175,6 +175,11 @@ t.immortalStream('statuses/filter', filter, function twitterStream (ts) {
     var original_tweet = tweet;
     var retweet;
     if (tweet.retweeted_status) {
+      if (t_opts.follow.indexOf(tweet.user.id) === -1) {
+        console.log('Ignoring retweet from unfollowed account: ' + JSON.stringify(tweet));
+        return;
+      }
+
       retweet = {
         name: tweet.user.name,
         screen_name: tweet.user.screen_name
