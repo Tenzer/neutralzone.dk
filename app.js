@@ -171,7 +171,7 @@ t.immortalStream('statuses/filter', filter, function twitterStream (ts) {
     var retweet;
     if (tweet.retweeted_status) {
       retweet = {
-        user: tweet.user.name,
+        name: tweet.user.name,
         screen_name: tweet.user.screen_name
       };
       tweet = tweet.retweeted_status;
