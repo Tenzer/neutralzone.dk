@@ -33,7 +33,7 @@ footer {
 	width: 100%;
 	position: relative;
 	margin: 5px 0;
-	border: 1px solid lightgrey;
+	border: 1px solid lightgray;
 	border-radius: 3px;
 }
 
@@ -58,7 +58,7 @@ a:hover {
 .time,
 .retweet a,
 .action {
-	color: grey;
+	color: gray;
 	font-size: 0.9em;
 	opacity: 0.5;
 	transition: opacity .25s;
@@ -94,7 +94,7 @@ a:hover {
 }
 
 .retweet {
-	color: lightgrey;
+	color: lightgray;
 	font-size: 0.9em;
 	margin-bottom: 5px;
 }
@@ -104,6 +104,6 @@ a:hover {
 }
 
 .actions {
-	color: lightgrey;
+	color: lightgray;
 	font-size: 0.9em;
 }
