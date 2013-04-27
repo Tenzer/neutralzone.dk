@@ -57,7 +57,7 @@ setInterval(function removeOldTweets () {
       db.remove(tweets[i].id, tweetDeleted);
     }
   });
-}, 21600000); // Every six hours
+}, 3600000); // Every hour
 
 
 /* Socket.IO */
