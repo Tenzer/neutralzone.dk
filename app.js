@@ -44,9 +44,6 @@ setInterval(function removeOldTweets () {
       console.error('Error getting tweets for deletion: %s', err);
     }
 
-    var timer = Date.now();
-    var size_before = db.size;
-
     function tweetDeleted (err) {
       if (err) {
         // Ignore error if no records were found
@@ -59,11 +56,6 @@ setInterval(function removeOldTweets () {
     for (var i = 0; i < tweets.length; i++) {
       db.remove(tweets[i].id, tweetDeleted);
     }
-
-    console.log('Deleted %d old tweets in %d ms.',
-        tweets.length,
-        Date.now() - timer
-    );
   });
 }, 21600000); // Every six hours
 
