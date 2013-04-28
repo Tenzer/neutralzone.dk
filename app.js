@@ -40,16 +40,13 @@ setInterval(function removeOldTweets () {
     }
   })
   .shallow()(function deleteTweets (err, tweets) {
-    if (err) {
+    if (err && err.message !== 'No records.') {
       console.error('Error getting tweets for deletion: %s', err);
     }
 
     function tweetDeleted (err) {
       if (err) {
-        // Ignore error if no records were found
-        if (err.message !== 'No records.') {
-          console.error('Error deleting tweet: %s', err);
-        }
+        console.error('Error deleting tweet: %s', err);
       }
     }
 
