@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "socket.io": "~0.9.10",
-    "immortal-ntwitter": "git://github.com/Tenzer/immortal-ntwitter.git",
+    "immortal-ntwitter": "git://github.com/horixon/immortal-ntwitter.git",
     "tiny": "git://github.com/chjj/node-tiny.git"
   },
   "devDependencies": {
