@@ -1,8 +1,4 @@
-/*jshint
-  node: true,
-  globalstrict: true,
-  laxcomma: true
- */
+/*jshint node: true */
 
 'use strict';
 
@@ -78,6 +74,10 @@ io.sockets.on('connection', function clientConnected (socket) {
   })
   .desc('timestamp')
   .limit(20)(function sendOldTweets (err, tweets) {
+    if (err) {
+      console.error('Error getting old tweets to send to client: %s', err);
+    }
+
     var retweet;
 
     for (var i = tweets.length - 1; i >= 0; i--) {
@@ -134,7 +134,7 @@ try {
 
 var t = require('immortal-ntwitter').create(t_opts.oauth_credentials);
 
-t.verifyCredentials(function testCredentials (err, data) {
+t.verifyCredentials(function testCredentials (err) {
   if (err) {
     console.error('Error verifying Twitter credentials: %s\nQuitting!', err);
     process.exit(1);
