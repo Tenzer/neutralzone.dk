@@ -2,6 +2,10 @@
   "name": "neutralzone.dk",
   "version": "0.0.1",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Tenzer/neutralzone.dk.git"
+  },
   "dependencies": {
     "socket.io": "~0.9.10",
     "immortal-ntwitter": "git://github.com/horixon/immortal-ntwitter.git",
