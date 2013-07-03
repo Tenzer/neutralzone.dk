@@ -107,3 +107,20 @@ a:hover {
   color: lightgray;
   font-size: 0.9em;
 }
+
+.action {
+  background-repeat: no-repeat;
+  padding: 4px 0 0 18px;
+}
+
+.reply {
+  background-image: url("images/reply.png");
+}
+
+.retweet {
+  background-image: url("images/retweet.png");
+}
+
+.favorite {
+  background-image: url("images/favorite.png");
+}
