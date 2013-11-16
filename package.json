@@ -7,14 +7,14 @@
     "url": "git://github.com/Tenzer/neutralzone.dk.git"
   },
   "dependencies": {
-    "socket.io": "~0.9.10",
+    "socket.io": "~0.9.16",
     "immortal-ntwitter": "git://github.com/horixon/immortal-ntwitter.git",
     "tiny": "git://github.com/chjj/node-tiny.git"
   },
   "devDependencies": {
-    "handlebars": "~1.0.0",
+    "handlebars": "~1.1.2",
     "grunt": "~0.4.1",
-    "grunt-reduce": "0.1.7",
-    "grunt-contrib-handlebars": "~0.5.8"
+    "grunt-reduce": "~0.1.10",
+    "grunt-contrib-handlebars": "~0.6.0"
   }
 }
