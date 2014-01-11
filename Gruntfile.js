@@ -2,10 +2,6 @@ module.exports = function (grunt) {
   'use strict';
 
   grunt.initConfig({
-    reduce: {
-      root: 'public',
-      outRoot: 'dist',
-      less: false
     },
     handlebars: {
       options: {
@@ -20,11 +16,18 @@ module.exports = function (grunt) {
           'public/js/tweet.handlebars.js': 'templates/tweet.handlebars'
         }
       }
+    },
+    reduce: {
+      root: 'public',
+      outRoot: 'dist',
+      less: false
     }
   });
 
-  grunt.loadNpmTasks('grunt-reduce');
   grunt.loadNpmTasks('grunt-contrib-handlebars');
+  grunt.loadNpmTasks('grunt-reduce');
 
+  grunt.registerTask('handlebars', ['handlebars']);
+  grunt.registerTask('reduce', ['reduce']);
   grunt.registerTask('default', ['handlebars', 'reduce']);
 };
