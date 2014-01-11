@@ -2,6 +2,11 @@ module.exports = function (grunt) {
   'use strict';
 
   grunt.initConfig({
+    autoprefixer: {
+      single_file: {
+        src: 'public/style.css',
+        dest: 'public/style-prefixed.css'
+      }
     },
     handlebars: {
       options: {
@@ -24,10 +29,12 @@ module.exports = function (grunt) {
     }
   });
 
+  grunt.loadNpmTasks('grunt-autoprefixer');
   grunt.loadNpmTasks('grunt-contrib-handlebars');
   grunt.loadNpmTasks('grunt-reduce');
 
+  grunt.registerTask('prefix', ['autoprefixer']);
   grunt.registerTask('handlebars', ['handlebars']);
   grunt.registerTask('reduce', ['reduce']);
-  grunt.registerTask('default', ['handlebars', 'reduce']);
+  grunt.registerTask('default', ['autoprefixer', 'handlebars', 'reduce']);
 };
