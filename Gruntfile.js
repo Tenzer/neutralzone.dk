@@ -33,8 +33,5 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-handlebars');
   grunt.loadNpmTasks('grunt-reduce');
 
-  grunt.registerTask('prefix', ['autoprefixer']);
-  grunt.registerTask('handlebars', ['handlebars']);
-  grunt.registerTask('reduce', ['reduce']);
   grunt.registerTask('default', ['autoprefixer', 'handlebars', 'reduce']);
 };
