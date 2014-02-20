@@ -12,10 +12,10 @@
     "tiny": "git://github.com/chjj/node-tiny.git"
   },
   "devDependencies": {
-    "handlebars": "~1.1.2",
-    "grunt": "~0.4.2",
-    "grunt-reduce": "~0.1.10",
-    "grunt-contrib-handlebars": "~0.6.0",
-    "grunt-autoprefixer": "~0.6.4"
+    "handlebars": "^1.3.0",
+    "grunt": "^0.4.2",
+    "grunt-reduce": "^0.1.15",
+    "grunt-contrib-handlebars": "^0.6.1",
+    "grunt-autoprefixer": "^0.6.5"
   }
 }
