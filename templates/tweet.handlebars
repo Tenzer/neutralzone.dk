@@ -1,19 +1,19 @@
 <a class="profile-pic" href="https://twitter.com/intent/user?screen_name={{screen_name}}">
-  <img src="{{pic_url}}" width="48px" height="48px" />
+    <img src="{{pic_url}}" width="48px" height="48px" />
 </a>
 <a class="time" href="https://twitter.com/{{screen_name}}/status/{{id}}"><time datetime="{{timestamp}}">0s</time></a>
 <div class="tweet">
-  <a class="real-name" href="https://twitter.com/intent/user?screen_name={{screen_name}}">{{name}}</a>
-  <a class="username" href="https://twitter.com/intent/user?screen_name={{screen_name}}">@{{screen_name}}</a>
-  <div class="text">{{{text}}}</div>
+    <a class="real-name" href="https://twitter.com/intent/user?screen_name={{screen_name}}">{{name}}</a>
+    <a class="username" href="https://twitter.com/intent/user?screen_name={{screen_name}}">@{{screen_name}}</a>
+    <div class="text">{{{text}}}</div>
 {{#if retweet}}
-  <div class="retweeted">
-    Retweeted by <a href="https://twitter.com/intent/user?screen_name={{retweet.screen_name}}">{{retweet.name}}</a>
-  </div>
+    <div class="retweeted">
+        Retweeted by <a href="https://twitter.com/intent/user?screen_name={{retweet.screen_name}}">{{retweet.name}}</a>
+    </div>
 {{/if}}
-  <div class="actions">
-    <a class="action reply" href="https://twitter.com/intent/tweet?in_reply_to={{id}}">Reply</a> -
-    <a class="action retweet" href="https://twitter.com/intent/retweet?tweet_id={{id}}">Retweet</a> -
-    <a class="action favorite" href="https://twitter.com/intent/favorite?tweet_id={{id}}">Favorite</a>
-  </div>
+    <div class="actions">
+        <a class="action reply" href="https://twitter.com/intent/tweet?in_reply_to={{id}}">Reply</a> -
+        <a class="action retweet" href="https://twitter.com/intent/retweet?tweet_id={{id}}">Retweet</a> -
+        <a class="action favorite" href="https://twitter.com/intent/favorite?tweet_id={{id}}">Favorite</a>
+    </div>
 </div>

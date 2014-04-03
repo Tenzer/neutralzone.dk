@@ -1,38 +1,39 @@
 <!DOCTYPE html>
 <html lang='en'>
-  <head>
-    <title>Neutral Zone</title>
-    <link rel='stylesheet' href='style-prefixed.css' />
-    <link rel='shortcut icon' href='favicon.ico' type='image/x-icon' />
-  </head>
-  <body>
-    <header>
-      <img src='images/header.png' width='890' height='250' alt='Neutral Zone - Live tweets from Danish American football teams' />
-    </header>
+    <head>
+        <title>Neutral Zone</title>
+        <link rel='stylesheet' href='style-prefixed.css' />
+        <link rel='shortcut icon' href='favicon.ico' type='image/x-icon' />
+    </head>
+    <body>
+        <header>
+            <img src='images/header.png' width='890' height='250' alt='Neutral Zone - Live tweets from Danish American football teams' />
+        </header>
 
-    <ul id='tweets' class='tweets'></ul>
+        <ul id='tweets' class='tweets'></ul>
+        <div id='loadmore' class='loadmore' onclick='getOldTweets()' style='display: none'>Load older tweets</div>
 
-    <footer>
-      <p id='credits'>This page is made by <a href='http://tenzer.dk/'>Jeppe Toustrup</a>. Banner by <a href='http://teige.dk/'>Nicklas Teige</a>. Favicon by <a href='http://momentumdesignlab.com/'>Momentum Design Lab</a>.</p>
-      <p id='status'>No connection to server.</p>
-    </footer>
+        <footer>
+            <p id='credits'>This page is made by <a href='http://tenzer.dk/'>Jeppe Toustrup</a>. Banner by <a href='http://teige.dk/'>Nicklas Teige</a>. Favicon by <a href='http://momentumdesignlab.com/'>Momentum Design Lab</a>.</p>
+            <p id='status'>No connection to server.</p>
+        </footer>
 
-    <script src='js/socket.io.js'></script>
-    <script src='js/handlebars.runtime.js'></script>
-    <script src='js/fuzzytime.js'></script>
-    <script src='js/tweet.handlebars.js'></script>
-    <script src='js/app.js'></script>
-    <script src='//platform.twitter.com/widgets.js' async='async'></script>
-    <script>
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-35123393-1']);
-      _gaq.push(['_trackPageview']);
+        <script src='js/socket.io.js'></script>
+        <script src='js/handlebars.runtime.js'></script>
+        <script src='js/fuzzytime.js'></script>
+        <script src='js/tweet.handlebars.js'></script>
+        <script src='js/app.js'></script>
+        <script src='//platform.twitter.com/widgets.js' async='async'></script>
+        <script>
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-35123393-1']);
+            _gaq.push(['_trackPageview']);
 
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-    </script>
-  </body>
+            (function() {
+                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+        </script>
+    </body>
 </html>
