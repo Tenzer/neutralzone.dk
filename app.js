@@ -34,7 +34,7 @@ function deleteTweet (tweet_id) {
         }
 
         db.hdel('nz:ids', tweet_id);
-        db.zrem('nz:tweets', timestamp);
+        db.zremrangebyscore('nz:tweets', timestamp, timestamp);
     });
 }
 
@@ -187,9 +187,12 @@ t.immortalStream('statuses/filter', filter, function twitterStream (ts) {
         storeTweet(tweet);
     });
 
-    ts.on('delete', function deleteTweet (tweet) {
-        io.sockets.emit('delete', { id: tweet.status.id_str });
-        deleteTweet(tweet.status.id_str);
+    ts.on('delete', function deleteTweetRequest (tweet) {
+        // We both get an object and a string whenever a tweet is deleted.
+        if (typeof tweet === 'object') {
+            io.sockets.emit('delete', { id: tweet.status.id_str });
+            deleteTweet(tweet.status.id_str);
+        }
     });
 
     ts.on('limit', function limitReceived (data) {
