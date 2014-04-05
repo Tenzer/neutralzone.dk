@@ -178,7 +178,7 @@ t.immortalStream('statuses/filter', filter, function twitterStream (ts) {
             return;
         }
 
-        io.sockets.emit('tweet', formatTweet(tweet));
+        io.sockets.emit('newtweets', formatTweet(tweet));
         storeTweet(tweet);
     });
 
