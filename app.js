@@ -163,17 +163,17 @@ if (t_opts.track) {
 
 t.immortalStream('statuses/filter', filter, function twitterStream (ts) {
     ts.on('data', function processNewTweet (tweet) {
-        if (tweet.in_reply_to_user_id) {
-            // Ignore replies
-            return;
-        }
-
         if (!tweet.user) {
             console.log('This tweet does not have a user object: ' + JSON.stringify(tweet));
             return;
         }
 
-        if (tweet.retweeted_status && t_opts.follow.indexOf(tweet.retweeted_status.user.id) === -1) {
+        if (tweet.in_reply_to_user_id && !tweet.retweeted_status) {
+            // Ignore replies, unless they are retweets
+            return;
+        }
+
+        if (tweet.retweeted_status && t_opts.follow.indexOf(tweet.user.id) === -1) {
             // Ignore retweets from accounts not followed
             return;
         }
