@@ -49,7 +49,7 @@ socket.on('newtweets', function tweetsReceived (data) {
             addTweet(tweet, 'new');
         });
     } else {
-        addTweet(tweet, 'new');
+        addTweet(data, 'new');
     }
 });
 
