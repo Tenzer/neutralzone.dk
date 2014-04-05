@@ -2,5 +2,4 @@ dist/
 node_modules/
 public/js/tweet.handlebars.js
 public/style-prefixed.css
-latest_tweets.tiny
-twitter_options.json
+config.json
