@@ -173,9 +173,14 @@ t.immortalStream('statuses/filter', filter, function twitterStream (ts) {
             return;
         }
 
-        if (tweet.retweeted_status && t_opts.follow.indexOf(tweet.user.id) === -1) {
-            // Ignore retweets from accounts not followed
-            return;
+        if (tweet.retweeted_status) {
+            if (t_opts.follow.indexOf(tweet.user.id) === -1) {
+                // Ignore retweets from accounts not followed
+                return;
+            } else if (t_opts.follow.indexOf(tweet.retweeted_status.user.id) !== -1) {
+                // Ignore retweets of accounts we follow, to avoid duplicate tweets
+                return;
+            }
         }
 
         io.sockets.emit('newtweets', formatTweet(tweet));
