@@ -3,9 +3,25 @@
 'use strict';
 
 
-/* Redis */
+/* Modules */
 
 var redis = require('redis');
+var socketio = require('socket.io');
+var ntwitter = require('immortal-ntwitter');
+
+
+/* Settings */
+
+try {
+    var config = require(__dirname + '/config.json');
+} catch (e) {
+    console.error('Error reading config.json: %s\nQuitting!', e.message);
+    process.exit(1);
+}
+
+
+/* Redis */
+
 var db = redis.createClient();
 
 function storeTweet (tweet) {
@@ -75,7 +91,7 @@ function formatTweet (tweet) {
 
 /* Socket.IO */
 
-var io = require('socket.io').listen(3000);
+var io = socketio.listen(config.listen_port);
 io.set('log level', 2);
 
 var clients = 0;
@@ -137,16 +153,9 @@ io.sockets.on('connection', function clientConnected (socket) {
 
 /* Twitter */
 
-try {
-    var t_opts = require(__dirname + '/twitter_options.json');
-} catch (e) {
-    console.error('Error reading twitter_options.json: %s\nQuitting!', e.message);
-    process.exit(1);
-}
+var twitter = ntwitter.create(config.oauth_credentials);
 
-var t = require('immortal-ntwitter').create(t_opts.oauth_credentials);
-
-t.verifyCredentials(function testCredentials (error) {
+twitter.verifyCredentials(function testCredentials (error) {
     if (error) {
         console.error('Error verifying Twitter credentials: %s\nQuitting!', error);
         process.exit(1);
@@ -154,14 +163,14 @@ t.verifyCredentials(function testCredentials (error) {
 });
 
 var filter = {};
-if (t_opts.follow) {
-    filter.follow = t_opts.follow.join(',');
+if (config.follow) {
+    filter.follow = config.follow.join(',');
 }
-if (t_opts.track) {
-    filter.track = t_opts.track.join(',');
+if (config.track) {
+    filter.track = config.track.join(',');
 }
 
-t.immortalStream('statuses/filter', filter, function twitterStream (ts) {
+twitter.immortalStream('statuses/filter', filter, function twitterStream (ts) {
     ts.on('data', function processNewTweet (tweet) {
         if (!tweet.user) {
             console.log('This tweet does not have a user object: ' + JSON.stringify(tweet));
@@ -174,10 +183,10 @@ t.immortalStream('statuses/filter', filter, function twitterStream (ts) {
         }
 
         if (tweet.retweeted_status) {
-            if (t_opts.follow.indexOf(tweet.user.id) === -1) {
+            if (config.follow.indexOf(tweet.user.id) === -1) {
                 // Ignore retweets from accounts not followed
                 return;
-            } else if (t_opts.follow.indexOf(tweet.retweeted_status.user.id) !== -1) {
+            } else if (config.follow.indexOf(tweet.retweeted_status.user.id) !== -1) {
                 // Ignore retweets of accounts we follow, to avoid duplicate tweets
                 return;
             }
