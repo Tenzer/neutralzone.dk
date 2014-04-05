@@ -50,6 +50,7 @@ function formatTweet (tweet) {
             name: tweet.user.name,
             screen_name: tweet.user.screen_name
         };
+        tweet.retweeted_status.timestamp = tweet.timestamp;
         tweet = tweet.retweeted_status;
     }
 
