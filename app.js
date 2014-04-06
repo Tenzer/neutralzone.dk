@@ -26,7 +26,6 @@ try {
 var db = redis.createClient();
 
 function storeTweet (tweet) {
-    tweet.timestamp = Date.now();
     db.zadd('nz:tweets', tweet.timestamp, JSON.stringify(tweet), function afterSave (error) {
         if (error) {
             return console.error('Error saving tweet: %s', error);
@@ -214,6 +213,7 @@ twitter.immortalStream('statuses/filter', filter, function twitterStream (ts) {
             }
         }
 
+        tweet.timestamp = Date.now();
         io.sockets.emit('newtweets', formatTweet(tweet));
         storeTweet(tweet);
     });
