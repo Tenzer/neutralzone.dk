@@ -3,6 +3,8 @@ var tweets_element = document.getElementById('tweets');
 var newest_tweet_date = 0;
 var oldest_tweet_date = 0;
 var loadmore = document.getElementById('loadmore');
+var normal_page_title = 'Neutral Zone';
+var unread_count = 0;
 
 socket.on('connect', function connectionEstablished () {
     socket.emit('gettweets', {
@@ -28,6 +30,7 @@ function addTweet (tweet, type) {
 
     if (type === 'new') {
         tweets_element.insertBefore(item, tweets_element.firstChild);
+        addTweetToTitle();
     } else if (type === 'old') {
         tweets_element.appendChild(item);
     }
@@ -83,4 +86,16 @@ socket.on('error', function errorDetected (error) {
 
 socket.on('time', function timeReceived (time) {
     goFuzzy(time);
+});
+
+function addTweetToTitle () {
+    if (document.hidden) {
+        document.title = '(' + ++unread_count + ') ' + normal_page_title;
+    }
+}
+
+document.addEventListener('visibilitychange', function visibilityChanged () {
+    if (!document.hidden) {
+        document.title = normal_page_title;
+    }
 });
