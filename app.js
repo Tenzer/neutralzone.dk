@@ -98,7 +98,9 @@ var io = socketio.listen(config.listen_port);
 io.set('log level', 2);
 
 var clients = 0;
-stats.gauge('neutralzone.clients.current', clients);
+setInterval(function connectedClients () {
+    stats.gauge('neutralzone.clients.current', clients);
+}, 60000);
 
 io.sockets.on('connection', function clientConnected (socket) {
     // Sends out new user count when a new client is connected
