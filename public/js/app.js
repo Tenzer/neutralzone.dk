@@ -97,5 +97,6 @@ function addTweetToTitle () {
 document.addEventListener('visibilitychange', function visibilityChanged () {
     if (!document.hidden) {
         document.title = normal_page_title;
+        unread_count = 0;
     }
 });
