@@ -19,5 +19,8 @@
     "grunt-reduce": "^0.1.18",
     "grunt-contrib-handlebars": "^0.7.0",
     "grunt-autoprefixer": "^0.7.2"
+  },
+  "optionalDependencies": {
+    "async": "^0.7.0"
   }
 }
