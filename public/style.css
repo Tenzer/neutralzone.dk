@@ -8,7 +8,7 @@ a img {
 }
 
 header,
-.tweets,
+#tweets,
 .loadmore,
 footer {
     margin: 0 auto;
@@ -25,11 +25,11 @@ footer {
     clear: both;
 }
 
-.tweets {
+#tweets {
     padding: 0;
 }
 
-.tweets li {
+#tweets li {
     display: inline-block;
     width: 100%;
     position: relative;
