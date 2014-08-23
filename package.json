@@ -9,18 +9,18 @@
   "dependencies": {
     "socket.io": "^1.0.6",
     "immortal-ntwitter": "git://github.com/horixon/immortal-ntwitter.git",
-    "redis": "^0.10.1",
-    "hiredis": "^0.1.16",
+    "redis": "^0.12.1",
+    "hiredis": "^0.1.17",
     "node-dogstatsd": "git://github.com/FalconSocial/node-dogstatsd.git"
   },
   "devDependencies": {
-    "handlebars": "^1.3.0",
-    "grunt": "^0.4.4",
-    "grunt-reduce": "^0.1.18",
-    "grunt-contrib-handlebars": "^0.7.0",
-    "grunt-autoprefixer": "^0.7.2"
+    "handlebars": "~1.3.0",
+    "grunt": "^0.4.5",
+    "grunt-reduce": "^0.2.1",
+    "grunt-contrib-handlebars": "^0.8.0",
+    "grunt-autoprefixer": "^1.0.1"
   },
   "optionalDependencies": {
-    "async": "^0.7.0"
+    "async": "^0.9.0"
   }
 }
