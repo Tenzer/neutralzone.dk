@@ -93,15 +93,14 @@ function formatTweet (tweet) {
 
 /* Socket.IO */
 
-var io = socketio.listen(config.listen_port);
-io.set('log level', 2);
+var io = socketio(config.listen_port);
 
 var clients = 0;
 setInterval(function connectedClients () {
     stats.gauge('neutralzone.clients.current', clients);
 }, 60000);
 
-io.sockets.on('connection', function clientConnected (socket) {
+io.on('connection', function clientConnected (socket) {
     // Sends out new user count when a new client is connected
     clients++;
     socket.emit('users', clients);
@@ -214,14 +213,14 @@ twitter.immortalStream('statuses/filter', filter, function twitterStream (ts) {
         }
 
         tweet.timestamp = Date.now();
-        io.sockets.emit('newtweets', formatTweet(tweet));
+        io.emit('newtweets', formatTweet(tweet));
         storeTweet(tweet);
     });
 
     ts.on('delete', function deleteTweetRequest (tweet) {
         // We both get an object and a string whenever a tweet is deleted.
         if (typeof tweet === 'object') {
-            io.sockets.emit('delete', { id: tweet.status.id_str });
+            io.emit('delete', { id: tweet.status.id_str });
             deleteTweet(tweet.status.id_str);
         }
     });
@@ -293,5 +292,5 @@ function renderTweet (tweet) {
 // Time is pushed from the server to the clients
 // This is in order to avoid clients with wrong time settings
 setInterval(function updateTime () {
-    io.sockets.emit('time', new Date().getTime());
+    io.emit('time', new Date().getTime());
 }, 15000);
