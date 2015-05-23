@@ -9,7 +9,6 @@
   "dependencies": {
     "hiredis": "^0.2.0",
     "immortal-ntwitter": "git://github.com/horixon/immortal-ntwitter.git",
-    "node-dogstatsd": "git://github.com/FalconSocial/node-dogstatsd.git",
     "redis": "^0.12.1",
     "socket.io": "^1.3.5"
   },

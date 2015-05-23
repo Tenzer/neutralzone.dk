@@ -8,7 +8,6 @@
 var redis = require('redis');
 var socketio = require('socket.io');
 var ntwitter = require('immortal-ntwitter');
-var stats = new (require('node-dogstatsd').StatsD)();
 
 
 /* Settings */
@@ -35,7 +34,6 @@ function storeTweet (tweet) {
             if (error) {
                 return console.error('Error saving tweet ID: %s', error);
             }
-            stats.increment('neutralzone.tweets.saved');
         });
     });
 }
@@ -52,7 +50,6 @@ function deleteTweet (tweet_id) {
 
         db.hdel('nz:ids', tweet_id);
         db.zremrangebyscore('nz:tweets', timestamp, timestamp);
-        stats.increment('neutralzone.tweets.deleted');
     });
 }
 
@@ -94,26 +91,18 @@ function formatTweet (tweet) {
 /* Socket.IO */
 
 var io = socketio(config.listen_port);
-
 var clients = 0;
-setInterval(function connectedClients () {
-    stats.gauge('neutralzone.clients.current', clients);
-}, 60000);
 
 io.on('connection', function clientConnected (socket) {
     // Sends out new user count when a new client is connected
     clients++;
     socket.emit('users', clients);
     socket.broadcast.emit('users', clients);
-    stats.gauge('neutralzone.clients.current', clients);
-    stats.increment('neutralzone.clients.connect');
 
     // Sends out new user count when a client disconnect
     socket.on('disconnect', function clientDisconnected () {
         clients--;
         socket.broadcast.emit('users', clients);
-        stats.gauge('neutralzone.clients.current', clients);
-        stats.increment('neutralzone.clients.disconnect');
     });
 
     socket.on('gettweets', function sendTweets (data) {
@@ -128,8 +117,6 @@ io.on('connection', function clientConnected (socket) {
 
                 // Sends out the server time to the new client, this calls goFuzzy()
                 socket.emit('time', new Date().getTime());
-
-                stats.increment('neutralzone.requests.latest');
             });
         } else if (data.type === 'newer' && data.date !== 0) {
             // Send whichever tweets has come in since the client got tweets last time
@@ -142,8 +129,6 @@ io.on('connection', function clientConnected (socket) {
 
                 // Sends out the server time to the new client, this calls goFuzzy()
                 socket.emit('time', new Date().getTime());
-
-                stats.increment('neutralzone.requests.fill');
             });
         } else if (data.type === 'older') {
             console.log('Client requested tweets older than', data.date);
@@ -157,8 +142,6 @@ io.on('connection', function clientConnected (socket) {
 
                 // Sends out the server time to the new client, this calls goFuzzy()
                 socket.emit('time', new Date().getTime());
-
-                stats.increment('neutralzone.requests.old');
             });
         }
     });
@@ -186,28 +169,22 @@ if (config.track) {
 
 twitter.immortalStream('statuses/filter', filter, function twitterStream (ts) {
     ts.on('data', function processNewTweet (tweet) {
-        stats.increment('neutralzone.tweets.incoming');
-
         if (!tweet.user) {
             console.log('This tweet does not have a user object: ' + JSON.stringify(tweet));
-            stats.increment('neutralzone.tweets.no_user');
             return;
         }
 
         if (tweet.in_reply_to_user_id && !tweet.retweeted_status) {
             // Ignore replies, unless they are retweets
-            stats.increment('neutralzone.tweets.replies');
             return;
         }
 
         if (tweet.retweeted_status) {
             if (config.follow.indexOf(tweet.user.id) === -1) {
                 // Ignore retweets from accounts not followed
-                stats.increment('neutralzone.tweets.retweet_unknown');
                 return;
             } else if (config.follow.indexOf(tweet.retweeted_status.user.id) !== -1) {
                 // Ignore retweets of accounts we follow, to avoid duplicate tweets
-                stats.increment('neutralzone.tweets.retweet_duplicate');
                 return;
             }
         }
