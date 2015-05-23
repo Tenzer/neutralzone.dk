@@ -1,26 +1,24 @@
 {
   "name": "neutralzone.dk",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "private": true,
   "repository": {
     "type": "git",
     "url": "git://github.com/Tenzer/neutralzone.dk.git"
   },
   "dependencies": {
-    "hiredis": "^0.2.0",
+    "handlebars": "^3.0.3",
+    "hiredis": "^0.3.0",
     "immortal-ntwitter": "git://github.com/horixon/immortal-ntwitter.git",
     "redis": "^0.12.1",
     "socket.io": "^1.3.5"
   },
-  "devDependencies": {
-    "autoprefixer": "^5.1.0",
-    "handlebars": "^3.0.1",
-    "grunt": "^0.4.5",
-    "grunt-reduce": "^1.5.0",
-    "grunt-contrib-handlebars": "^0.10.1",
-    "grunt-autoprefixer": "^2.2.0"
-  },
   "optionalDependencies": {
-    "async": "^0.9.0"
+    "async": "^1.0.0"
+  },
+  "scripts": {
+    "handlebars": "handlebars --output public/js/tweet.handlebars.js templates/tweet.handlebars",
+    "assetgraph": "docker run -it --rm -v \"$(pwd)\":/app assetgraph/assetgraph-builder /app/public/index.html --outroot /app/dist",
+    "build": "npm run handlebars && npm run assetgraph"
   }
 }
