@@ -5,7 +5,7 @@
 
 var async = require('async');
 var db = require('redis').createClient();
-var tweet_id = process.argv[2]
+var tweet_id = process.argv[2].split('/').pop();
 
 db.hget('nz:ids', tweet_id, function (error, timestamp) {
     if (error) {
