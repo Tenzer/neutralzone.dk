@@ -1,5 +1,4 @@
 dist/
 node_modules/
 public/js/tweet.handlebars.js
-public/style-prefixed.css
 config.json
