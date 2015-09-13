@@ -7,14 +7,13 @@
     "url": "git://github.com/Tenzer/neutralzone.dk.git"
   },
   "dependencies": {
-    "handlebars": "^3.0.3",
-    "hiredis": "^0.4.0",
+    "handlebars": "^4.0.2",
     "immortal-ntwitter": "git://github.com/horixon/immortal-ntwitter.git",
-    "redis": "^0.12.1",
-    "socket.io": "^1.3.5"
+    "redis": "^1.0.0",
+    "socket.io": "^1.3.6"
   },
   "optionalDependencies": {
-    "async": "^1.0.0"
+    "async": "^1.4.2"
   },
   "scripts": {
     "handlebars": "handlebars --output public/js/tweet.handlebars.js templates/tweet.handlebars",
