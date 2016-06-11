@@ -78,8 +78,8 @@ function formatTweet (tweet) {
         retweet: retweet
     };
 
-    if (tweet.user.profile_image_url) {
-        t.pic_url = tweet.user.profile_image_url;
+    if (tweet.user.profile_image_url_https) {
+        t.pic_url = tweet.user.profile_image_url_https;
     } else {
         t.pic_url = 'images/no-picture.png';
     }
