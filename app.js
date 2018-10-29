@@ -215,52 +215,50 @@ twitter.immortalStream('statuses/filter', filter, function twitterStream (ts) {
 /* Rendering */
 
 function renderTweet (tweet) {
+    if (tweet.truncated) {
+        var text = tweet.extended_tweet.full_text;
+        var entities = tweet.extended_tweet.entities;
+    } else {
+        var text = tweet.text;
+        var entities = tweet.entities;
+    }
+
     // Find out if tweet already has links
-    if (tweet.text.indexOf('</a>') !== -1) {
+    if (text.indexOf('</a>') !== -1) {
         // It has, so don't create our own links
-        return tweet.text;
+        return text;
     }
 
     // URLs
     var i, entity;
-    if (tweet.entities.urls) {
-        tweet.entities.urls.forEach(function renderUrls (item) {
-            tweet.text = tweet.text.replace(item.url, '<a href="' +
-                item.url + '">' + item.display_url + '</a>'
-            );
+    if (entities.urls) {
+        entities.urls.forEach(function renderUrls (item) {
+            text = text.replace(item.url, '<a href="' + item.url + '">' + item.display_url + '</a>');
         });
     }
 
     // Media
-    if (tweet.entities.media) {
-        tweet.entities.media.forEach(function renderMedia (item) {
-            tweet.text = tweet.text.replace(item.url, '<a href="' +
-                item.url + '">' + item.display_url + '</a>'
-            );
+    if (entities.media) {
+        entities.media.forEach(function renderMedia (item) {
+            text = text.replace(item.url, '<a href="' + item.url + '">' + item.display_url + '</a>');
         });
     }
 
     // Users
-    if (tweet.entities.user_mentions) {
-        tweet.entities.user_mentions.forEach( function renderUsers (item) {
-            tweet.text = tweet.text.replace('@' + item.screen_name,
-                '<a href="https://twitter.com/intent/user?screen_name=' +
-                item.screen_name + '">@' + item.screen_name + '</a>'
-            );
+    if (entities.user_mentions) {
+        entities.user_mentions.forEach( function renderUsers (item) {
+            text = text.replace('@' + item.screen_name, '<a href="https://twitter.com/intent/user?screen_name=' + item.screen_name + '">@' + item.screen_name + '</a>');
         });
     }
 
     // Hashtags
-    if (tweet.entities.hashtags) {
-        tweet.entities.hashtags.forEach(function renderHashtags (item) {
-            tweet.text = tweet.text.replace('#' + item.text,
-                '<a href="https://twitter.com/search/%23' + item.text +
-                '">#' + item.text + '</a>'
-            );
+    if (entities.hashtags) {
+        entities.hashtags.forEach(function renderHashtags (item) {
+            text = text.replace('#' + item.text, '<a href="https://twitter.com/search/%23' + item.text + '">#' + item.text + '</a>');
         });
     }
 
-    return tweet.text;
+    return text;
 }
 
 
